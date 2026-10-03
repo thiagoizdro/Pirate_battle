@@ -10,3 +10,6 @@ playwright-report/
 test-results/
 blob-report/
 .vercel/
+
+!.env.e2e
+dist-e2e/

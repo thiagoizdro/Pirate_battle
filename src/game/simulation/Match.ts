@@ -1,7 +1,7 @@
 import type { MatchConfig } from '../config';
 import { buildObstacles, DEFAULT_ARENA, type ArenaMap } from './arena';
 import type { StepContext, World } from './context';
-import { createPlayer } from './entities';
+import { createEnemy, createPlayer } from './entities';
 import type { GameEvent } from './events';
 import { SeededRng } from './rng';
 import { updateEnemies } from './systems/ai';
@@ -9,7 +9,7 @@ import { resolveContacts } from './systems/contacts';
 import { updatePlayer } from './systems/player';
 import { updateProjectiles } from './systems/projectiles';
 import { updateSpawns } from './systems/spawn';
-import type { EndReason, InputState, MatchState } from './types';
+import type { EndReason, EnemyKind, InputState, MatchState } from './types';
 
 /**
  * One match: its frozen config, its state and its rules. Pure TypeScript, no rendering and no
@@ -85,6 +85,18 @@ export class Match {
 
     if (!this.state.player.alive) this.end('defeated');
     else if (this.stepsTaken >= this.totalSteps) this.end('time_up');
+  }
+
+  /**
+   * Scenario setup for tests (window.__PIRATE_TEST__): places one enemy with the normal entity
+   * factory and announces it like a regular spawn. Everything after that (movement, firing,
+   * damage, score) is decided by the normal rules.
+   */
+  spawnEnemyAt(kind: EnemyKind, x: number, y: number, rotation: number): number {
+    const enemy = createEnemy(this.config, kind, this.state.nextId++, x, y, rotation);
+    this.state.enemies.push(enemy);
+    this.events.push({ type: 'enemySpawned', id: enemy.id, kind, x, y });
+    return enemy.id;
   }
 
   /** Returns the events produced since the last call, and clears the buffer. */

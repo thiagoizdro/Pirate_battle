@@ -6,10 +6,14 @@ import { createQueryClient } from './api/queries';
 import { RegistrationProvider } from './api/registration';
 import { App } from './app/App';
 import { leaveBattleOnLoad } from './app/router';
+import { installTestHooks, TEST_HOOKS_ENABLED } from './game/testHooks';
 import './styles/global.css';
 
 // Reloading during a battle ends it (R55): start from the menu instead.
 leaveBattleOnLoad();
+
+// Test instrumentation exists only in the e2e build; this whole branch is removed otherwise.
+if (TEST_HOOKS_ENABLED) installTestHooks();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element #root not found');

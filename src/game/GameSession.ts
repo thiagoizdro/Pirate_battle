@@ -3,7 +3,7 @@ import type { Ticker } from 'pixi.js';
 import { audioEngine } from './audio/AudioEngine';
 import { GameAudio } from './audio/GameAudio';
 import { HudStore, type HudSnapshot, type PauseReason, type SessionStatus } from './bridge';
-import { createMatchConfig, type GameOptions } from './config';
+import { createMatchConfig, DEFAULT_BALANCE, type GameOptions } from './config';
 import { KeyboardInput } from './input/KeyboardInput';
 import { TouchInput } from './input/TouchInput';
 import { createArenaView } from './render/ArenaView';
@@ -16,6 +16,14 @@ import type { GameEvent } from './simulation/events';
 import { Match } from './simulation/Match';
 import { randomSeed } from './simulation/rng';
 import { EMPTY_INPUT, type InputState } from './simulation/types';
+import {
+  getTestSetup,
+  mergeBalance,
+  registerTestSession,
+  TEST_HOOKS_ENABLED,
+  unregisterTestSession,
+  type TestSessionControl,
+} from './testHooks';
 
 export interface GameSessionOptions {
   container: HTMLElement;
@@ -60,6 +68,8 @@ export class GameSession {
   private pauseReason: PauseReason | null = null;
   private lastSecondsLeft = -1;
   private destroyed = false;
+  /** Test builds only: when true, real time does not advance the match (see testHooks.ts). */
+  private frozen = false;
 
   static async create(options: GameSessionOptions): Promise<GameSession> {
     const { widthPx, heightPx } = createMatchConfig(options.options).arena;
@@ -90,6 +100,10 @@ export class GameSession {
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     stage.app.ticker.add(this.tick);
     this.audio.matchStarted();
+    if (TEST_HOOKS_ENABLED) {
+      this.frozen = getTestSetup().startFrozen;
+      registerTestSession(this.testControl);
+    }
   }
 
   /** Read-only access for the HUD, tests and the dev overlay. */
@@ -154,6 +168,7 @@ export class GameSession {
   destroy(): void {
     if (this.destroyed) return;
     this.destroyed = true;
+    if (TEST_HOOKS_ENABLED) unregisterTestSession(this.testControl);
     this.stage.app.ticker.remove(this.tick);
     this.keyboard.detach();
     this.touch.setGameplayActive(false);
@@ -166,6 +181,16 @@ export class GameSession {
   }
 
   private createMatch(seed: number | undefined): Match {
+    if (TEST_HOOKS_ENABLED) {
+      // Test builds may choose the seed and adjust balancing (e.g. no automatic spawns).
+      const setup = getTestSetup();
+      const balance = mergeBalance(DEFAULT_BALANCE, setup.balance);
+      return new Match(
+        createMatchConfig(this.options, balance),
+        seed ?? setup.seed ?? randomSeed(),
+        DEFAULT_ARENA,
+      );
+    }
     return new Match(createMatchConfig(this.options), seed ?? randomSeed(), DEFAULT_ARENA);
   }
 
@@ -181,7 +206,7 @@ export class GameSession {
   }
 
   private readonly tick = (ticker: Ticker): void => {
-    const running = this.status === 'running';
+    const running = this.status === 'running' && !this.frozen;
     if (running) {
       const steps = this.clock.consumeFrame(ticker.deltaMS);
       // Read input only when a step will use it, so a quick tap is never consumed by a frame
@@ -196,6 +221,81 @@ export class GameSession {
     this.entities.sync(this.match.state, visualDtMs);
     this.stage.updateShake(visualDtMs);
     this.publishHud();
+  };
+
+  /**
+   * Runs `ms` of simulated time immediately (test builds). Same steps as a real frame:
+   * read input, step, dispatch events, render. Does nothing while the game is paused or over.
+   */
+  private runSimulatedTime(ms: number): void {
+    if (this.status !== 'running') return;
+    const steps = this.clock.consumeExact(ms);
+    if (steps > 0) this.readInput();
+    for (let i = 0; i < steps; i++) this.match.step(this.input);
+    this.dispatch(this.match.drainEvents());
+    this.entities.sync(this.match.state, ms);
+    this.publishHud();
+  }
+
+  /** The object window.__PIRATE_TEST__ talks to (only registered in test builds). */
+  private readonly testControl: TestSessionControl = {
+    snapshot: () => {
+      const { state, config, world } = this.match;
+      return structuredClone({
+        status: this.status,
+        pauseReason: this.pauseReason,
+        frozen: this.frozen,
+        seed: this.match.seed,
+        elapsedMs: state.elapsedMs,
+        remainingMs: this.match.remainingMs,
+        score: state.score,
+        endReason: state.endReason,
+        player: {
+          x: state.player.x,
+          y: state.player.y,
+          rotation: state.player.rotation,
+          health: state.player.health,
+          maxHealth: state.player.maxHealth,
+          radius: state.player.radius,
+          cooldowns: state.player.cooldowns,
+        },
+        enemies: state.enemies.map((e) => ({
+          id: e.id,
+          kind: e.kind,
+          x: e.x,
+          y: e.y,
+          rotation: e.rotation,
+          health: e.health,
+          maxHealth: e.maxHealth,
+          radius: e.radius,
+        })),
+        projectiles: state.projectiles.map((p) => ({
+          id: p.id,
+          owner: p.owner,
+          x: p.x,
+          y: p.y,
+          dirX: p.dirX,
+          dirY: p.dirY,
+        })),
+        config,
+        obstacles: [...world.obstacles],
+        display: this.entities.displayCounts,
+      });
+    },
+    setFrozen: (frozen) => {
+      this.frozen = frozen;
+      // Drop any real time collected before the switch, so nothing jumps.
+      if (!frozen) this.clock.resume();
+    },
+    stepMs: (ms) => {
+      this.runSimulatedTime(ms);
+    },
+    spawnEnemy: (kind, x, y, rotation) => {
+      const id = this.match.spawnEnemyAt(kind, x, y, rotation);
+      this.dispatch(this.match.drainEvents());
+      this.entities.sync(this.match.state, 0);
+      return id;
+    },
   };
 
   private readInput(): void {

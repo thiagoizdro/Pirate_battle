@@ -4,7 +4,7 @@ A 2D top-down naval shooter built with **React, TypeScript (strict) and PixiJS**
 
 Jungle Gaming technical challenge. The original brief is in [challenge/README.md](challenge/README.md) (Portuguese).
 
-- **Live demo:** _to be added after the Vercel deploy_
+- **Live demo:** https://pirate-battle-dh3p.vercel.app/
 - **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md)
 - **Requirements, assumptions and rubric:** [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md)
 - **Requirement → code → test checklist:** [docs/CHECKLIST.md](docs/CHECKLIST.md)

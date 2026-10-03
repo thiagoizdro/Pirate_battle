@@ -5,3 +5,6 @@ playwright-report
 test-results
 package-lock.json
 dist-e2e
+docs/reports/e2e
+docs/reports/unit
+docs/reports/perf

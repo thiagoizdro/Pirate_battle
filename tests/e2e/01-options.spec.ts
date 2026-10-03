@@ -62,6 +62,12 @@ test.describe('Area 1: options navigation, validation and persistence', () => {
     await page.keyboard.press('KeyP');
     await page.getByRole('dialog').getByRole('button', { name: 'Options' }).click();
     await page.getByLabel('Game session time', { exact: true }).fill('120');
+    // Game keys are not captured while typing: "p" (pause key) and "e"/"q" stay in the field.
+    const name = page.getByLabel('Captain name');
+    await name.fill('');
+    await name.pressSequentially('Pepe Quest');
+    await expect(name).toHaveValue('Pepe Quest');
+    await expect(page.getByRole('dialog')).toBeVisible();
     await page.getByRole('button', { name: 'Save' }).click();
     await page.getByRole('button', { name: 'Back' }).click();
     await page.getByRole('button', { name: 'Resume' }).click();

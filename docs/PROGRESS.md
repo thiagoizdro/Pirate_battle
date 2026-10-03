@@ -5,7 +5,7 @@
 | 0     | Analysis: requirements, conventions, stack and structure proposal                | Done        |
 | 1     | Foundation: tooling, config, RNG, clock, Pixi lifecycle, asset loader, arena     | Done        |
 | 2     | Core gameplay and simulation unit tests                                          | Done        |
-| 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Not started |
+| 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done        |
 | 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Not started |
 | 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Not started |
 | 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Not started |
@@ -45,3 +45,18 @@ Done:
 Verified in Chromium: movement, firing, pause with frozen timer, auto-pause on blur, end by defeat with frozen state, Play Again resets health/score/timer; window/document listeners return to 0 after 5 menu/game cycles; no console errors.
 
 Pending: health bars, effects, deterioration, sounds, touch controls (Phase 3); options persistence and final UI (Phase 4).
+
+## Phase 3: Feedback and polish
+
+Done:
+
+- Health bars in PixiJS above the player and every enemy, built from the UI atlas; the fill is cropped from the left using `ui.layout.fill_rect` (green/amber/red for the player, green/red for enemies). The cropped texture is rebuilt only when health changes.
+- Ship deterioration: intact → damaged (one flame) → heavily damaged (two flickering flames) → wreck, using the `ship_N` damage variants and `fire_1/2`.
+- Pooled effects (`EffectsRenderer`): muzzle flash, hit spark, water splash, puff on islands, explosion flipbook, sinking wreck. Red flash on damaged ships and a short camera shake when the player is hit (skipped with `prefers-reduced-motion`). Effects freeze while paused.
+- Audio with the Web Audio API: one shared `AudioContext` unlocked by the Play click, sounds decoded once, master gain for volume/mute (persisted), event-driven `GameAudio` per session (cannons, hits, splashes, explosions, score, low health, time warnings at 30/10 s, pause/resume, end jingles, ocean ambience and a sailing loop while moving). Everything stops on leave.
+- Touch controls with the pack's round buttons and icons, multi-touch via pointer capture, merged with the keyboard; quick taps are latched for one step (also fixes very short key presses).
+- 99 unit tests (new: input latching, damage-state thresholds).
+
+Verified in Chromium: effects, bars and deterioration visible; all 27 sounds load; volume/mute persist after reload; on a Pixel 7 landscape emulation, holding "forward" and "fire" with two fingers moves and fires at the same time; no console errors.
+
+Pending for Phase 4: final HUD/dialog styling and layout so touch buttons and HUD never cover the arena on small screens, options screen, result persistence, accessibility pass.

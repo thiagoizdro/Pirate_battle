@@ -25,6 +25,8 @@ export class PixiStage {
   private readonly resizeObserver: ResizeObserver;
   private viewport: Viewport = { scale: 1, offsetX: 0, offsetY: 0 };
   private destroyed = false;
+  private shakeMs = 0;
+  private shakeIntensityPx = 0;
 
   private constructor(
     app: Application,
@@ -75,6 +77,25 @@ export class PixiStage {
 
   getViewport(): Viewport {
     return this.viewport;
+  }
+
+  /** Starts a short camera shake, in arena pixels. Callers skip it for reduced motion. */
+  shake(intensityPx: number, durationMs: number): void {
+    this.shakeIntensityPx = Math.max(this.shakeIntensityPx, intensityPx);
+    this.shakeMs = Math.max(this.shakeMs, durationMs);
+  }
+
+  /** Called every frame: moves the world by a random, shrinking offset while a shake runs. */
+  updateShake(dtMs: number): void {
+    if (this.shakeMs <= 0) return;
+    this.shakeMs = Math.max(0, this.shakeMs - dtMs);
+    const strength = this.shakeMs > 0 ? this.shakeIntensityPx * this.viewport.scale : 0;
+    if (this.shakeMs === 0) this.shakeIntensityPx = 0;
+    // Cosmetic only, so Math.random is fine here (the simulation uses the seeded RNG).
+    this.world.position.set(
+      this.viewport.offsetX + (Math.random() * 2 - 1) * strength,
+      this.viewport.offsetY + (Math.random() * 2 - 1) * strength,
+    );
   }
 
   private resize(): void {

@@ -1,50 +1,26 @@
 import { Container, Sprite, type Texture } from 'pixi.js';
 
-import type { Enemy, MatchState, Projectile, ShipBase, ShipKind } from '../simulation/types';
+import type { GameEvent } from '../simulation/events';
+import type { Enemy, MatchState, Projectile, ShipKind } from '../simulation/types';
 import { frameTexture, type GameAssets } from './assets';
+import { EffectsRenderer } from './EffectsRenderer';
+import { shipFrame, WRECK_STATE } from './shipArt';
+import { SHIP_SCALE, ShipView, SPRITE_ROTATION_OFFSET } from './ShipView';
 
-/** Ship art per type (ship_N: colour = (N-1) % 6, see docs/REQUIREMENTS.md). */
-const SHIP_FRAMES: Record<ShipKind, string> = {
-  player: 'ship_5', // blue
-  chaser: 'ship_3', // red
-  shooter: 'ship_2', // black
-};
-
-/** Visual size only; the collision radius lives in the config. */
-const SHIP_SCALE: Record<ShipKind, number> = { player: 0.8, chaser: 0.7, shooter: 0.8 };
-
-/** Ship sprites are drawn with the bow pointing down (+y), while rotation 0 means "facing right". */
-const SPRITE_ROTATION_OFFSET = -Math.PI / 2;
-
-class ShipView {
-  readonly root: Container;
-  private readonly hull: Sprite;
-
-  constructor(texture: Texture, scale: number) {
-    this.root = new Container();
-    this.hull = new Sprite({ texture, anchor: 0.5, scale });
-    this.root.addChild(this.hull);
-  }
-
-  update(ship: ShipBase): void {
-    this.root.position.set(ship.x, ship.y);
-    this.hull.rotation = ship.rotation + SPRITE_ROTATION_OFFSET;
-  }
-
-  destroy(): void {
-    this.root.destroy({ children: true });
-  }
-}
+const EXPLOSION_SIZE: Record<ShipKind, number> = { player: 1.2, chaser: 0.9, shooter: 1 };
 
 /**
- * Draws ships and projectiles from the simulation state every frame. It never changes the state.
- * Projectile sprites are pooled: they are created once and reused, so firing does not allocate.
+ * Draws ships, projectiles and effects from the simulation state and its events.
+ * It never changes the state. Projectile sprites and effects are pooled.
  */
 export class EntityRenderer {
   readonly root = new Container({ label: 'entities' });
   private readonly shipLayer = new Container({ label: 'ships' });
   private readonly projectileLayer = new Container({ label: 'projectiles' });
-  private readonly textures: Record<ShipKind, Texture>;
+  private readonly effects: EffectsRenderer;
+  private readonly assets: GameAssets;
+  private readonly reducedMotion: boolean;
+  private readonly wreckTextures: Record<ShipKind, Texture>;
   private readonly cannonBall: Texture;
   private playerView: ShipView;
   private readonly enemyViews = new Map<number, ShipView>();
@@ -52,39 +28,96 @@ export class EntityRenderer {
   /** Reused every frame to find views whose enemy is gone, without allocating. */
   private readonly seenEnemyIds = new Set<number>();
 
-  constructor(assets: GameAssets) {
-    this.textures = {
-      player: frameTexture(assets.ships, SHIP_FRAMES.player),
-      chaser: frameTexture(assets.ships, SHIP_FRAMES.chaser),
-      shooter: frameTexture(assets.ships, SHIP_FRAMES.shooter),
+  constructor(assets: GameAssets, reducedMotion: boolean) {
+    this.assets = assets;
+    this.reducedMotion = reducedMotion;
+    this.effects = new EffectsRenderer(assets);
+    const wreck = (kind: ShipKind): Texture =>
+      frameTexture(assets.ships, shipFrame(kind, WRECK_STATE));
+    this.wreckTextures = {
+      player: wreck('player'),
+      chaser: wreck('chaser'),
+      shooter: wreck('shooter'),
     };
     this.cannonBall = frameTexture(assets.ships, 'cannon_ball');
-    this.root.addChild(this.shipLayer, this.projectileLayer);
+    // Wrecks (effects) sit under living ships? No: effects go on top so explosions are visible.
+    this.root.addChild(this.shipLayer, this.projectileLayer, this.effects.root);
     this.playerView = this.createShipView('player');
   }
 
-  sync(state: MatchState): void {
-    this.playerView.update(state.player);
-    this.syncEnemies(state.enemies);
+  /** Called once per frame. `dtMs` only drives cosmetic animation (flames, flashes, effects). */
+  sync(state: MatchState, dtMs: number): void {
+    this.playerView.update(state.player, dtMs);
+    this.syncEnemies(state.enemies, dtMs);
     this.syncProjectiles(state.projectiles);
+    this.effects.update(dtMs);
   }
 
-  /** Removes every ship view for a restart. Pooled projectile sprites are kept and hidden. */
+  /** Turns simulation events into visual feedback (R41, R42, R44). */
+  handleEvent(event: GameEvent, state: MatchState): void {
+    switch (event.type) {
+      case 'shotFired':
+        this.effects.muzzleFlash(event.x, event.y, event.rotation);
+        break;
+      case 'projectileHit':
+        this.effects.hit(event.x, event.y);
+        break;
+      case 'projectileExpired':
+        this.effects.splash(event.x, event.y);
+        break;
+      case 'projectileBlocked':
+        this.effects.puff(event.x, event.y);
+        break;
+      case 'enemyDamaged':
+        this.enemyViews.get(event.id)?.flash();
+        break;
+      case 'playerDamaged':
+        this.playerView.flash();
+        if (event.health === 0) {
+          this.effects.explosion(state.player.x, state.player.y, EXPLOSION_SIZE.player);
+        }
+        break;
+      case 'enemyDestroyed':
+        this.effects.wreck(
+          this.wreckTextures[event.kind],
+          event.x,
+          event.y,
+          event.rotation + SPRITE_ROTATION_OFFSET,
+          SHIP_SCALE[event.kind],
+        );
+        this.effects.explosion(event.x, event.y, EXPLOSION_SIZE[event.kind]);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** Removes every ship view and effect for a restart. Pooled sprites are kept and hidden. */
   reset(): void {
     for (const view of this.enemyViews.values()) view.destroy();
     this.enemyViews.clear();
     this.playerView.destroy();
     this.playerView = this.createShipView('player');
     for (const sprite of this.projectilePool) sprite.visible = false;
+    this.effects.clear();
+  }
+
+  /** Numbers for the dev metrics overlay. */
+  get displayCounts(): { ships: number; projectileSprites: number; effects: number } {
+    return {
+      ships: this.enemyViews.size + 1,
+      projectileSprites: this.projectilePool.length,
+      effects: this.effects.activeCount,
+    };
   }
 
   private createShipView(kind: ShipKind): ShipView {
-    const view = new ShipView(this.textures[kind], SHIP_SCALE[kind]);
+    const view = new ShipView(this.assets, kind, this.reducedMotion);
     this.shipLayer.addChild(view.root);
     return view;
   }
 
-  private syncEnemies(enemies: readonly Enemy[]): void {
+  private syncEnemies(enemies: readonly Enemy[], dtMs: number): void {
     const seen = this.seenEnemyIds;
     seen.clear();
     for (const enemy of enemies) {
@@ -95,9 +128,9 @@ export class EntityRenderer {
         view = this.createShipView(enemy.kind);
         this.enemyViews.set(enemy.id, view);
       }
-      view.update(enemy);
+      view.update(enemy, dtMs);
     }
-    // Views whose enemy left the state are destroyed (explosions come from events in Phase 3).
+    // Views whose enemy left the state are destroyed; the wreck and explosion come from events.
     for (const [id, view] of this.enemyViews) {
       if (seen.has(id)) continue;
       view.destroy();

@@ -1,8 +1,11 @@
 import type { Ticker } from 'pixi.js';
 
+import { audioEngine } from './audio/AudioEngine';
+import { GameAudio } from './audio/GameAudio';
 import { HudStore, type HudSnapshot, type PauseReason, type SessionStatus } from './bridge';
 import { createMatchConfig, type GameOptions } from './config';
 import { KeyboardInput } from './input/KeyboardInput';
+import { TouchInput } from './input/TouchInput';
 import { createArenaView } from './render/ArenaView';
 import type { GameAssets } from './render/assets';
 import { EntityRenderer } from './render/EntityRenderer';
@@ -26,17 +29,28 @@ export interface GameSessionOptions {
 
 export type GameEventListener = (event: GameEvent) => void;
 
+const HIT_SHAKE_PX = 6;
+const HIT_SHAKE_MS = 180;
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 /**
  * Glue between the pure simulation and the browser: owns the PixiJS stage, the fixed-step clock,
- * the keyboard and the match, runs the loop on the PixiJS ticker, and handles pause, restart and
- * teardown. React only talks to it through these methods and the HUD store.
+ * the inputs, the renderers, the audio and the match. It runs the loop on the PixiJS ticker and
+ * handles pause, restart and teardown. React only talks to it through these methods, the HUD
+ * store and `touch`.
  */
 export class GameSession {
   readonly hud: HudStore;
+  /** The on-screen touch buttons write here. */
+  readonly touch = new TouchInput();
   private readonly stage: PixiStage;
   private readonly options: GameOptions;
   private readonly keyboard: KeyboardInput;
   private readonly entities: EntityRenderer;
+  private readonly audio = new GameAudio(audioEngine);
   private readonly eventListeners = new Set<GameEventListener>();
   /** Reused every frame so reading input never allocates. */
   private readonly input: InputState = { ...EMPTY_INPUT };
@@ -44,6 +58,7 @@ export class GameSession {
   private clock: FixedStepClock;
   private status: SessionStatus = 'running';
   private pauseReason: PauseReason | null = null;
+  private lastSecondsLeft = -1;
   private destroyed = false;
 
   static async create(options: GameSessionOptions): Promise<GameSession> {
@@ -57,28 +72,34 @@ export class GameSession {
     this.options = { ...options.options };
     this.match = this.createMatch(options.seed);
     this.clock = this.createClock();
-    this.hud = new HudStore(this.buildHud());
+    this.hud = new HudStore(this.buildHud(null));
 
     const { tileSizePx } = this.match.config.arena;
     const obstacles = options.showColliders ? this.match.world.obstacles : undefined;
     stage.world.addChild(createArenaView(DEFAULT_ARENA, options.assets, tileSizePx, obstacles));
-    this.entities = new EntityRenderer(options.assets);
+    this.entities = new EntityRenderer(options.assets, prefersReducedMotion());
     stage.world.addChild(this.entities.root);
-    this.entities.sync(this.match.state);
+    this.entities.sync(this.match.state, 0);
 
     this.keyboard = new KeyboardInput(() => {
       this.togglePause();
     });
     this.keyboard.attach();
-    this.keyboard.setGameplayActive(true);
+    this.setGameplayActive(true);
     window.addEventListener('blur', this.handleWindowBlur);
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     stage.app.ticker.add(this.tick);
+    this.audio.matchStarted();
   }
 
   /** Read-only access for the HUD, tests and the dev overlay. */
   get matchState(): Match['state'] {
     return this.match.state;
+  }
+
+  /** Display object counts for the dev metrics overlay. */
+  get displayCounts(): EntityRenderer['displayCounts'] {
+    return this.entities.displayCounts;
   }
 
   onEvent(listener: GameEventListener): () => void {
@@ -93,7 +114,8 @@ export class GameSession {
     this.status = 'paused';
     this.pauseReason = reason;
     this.clock.pause();
-    this.keyboard.setGameplayActive(false);
+    this.setGameplayActive(false);
+    this.audio.paused();
     this.publishHud();
   }
 
@@ -103,7 +125,8 @@ export class GameSession {
     this.status = 'running';
     this.pauseReason = null;
     this.clock.resume();
-    this.keyboard.setGameplayActive(true);
+    this.setGameplayActive(true);
+    this.audio.resumed();
     this.publishHud();
   }
 
@@ -118,21 +141,25 @@ export class GameSession {
     this.match = this.createMatch(seed);
     this.clock = this.createClock();
     this.entities.reset();
-    this.entities.sync(this.match.state);
+    this.entities.sync(this.match.state, 0);
     this.status = 'running';
     this.pauseReason = null;
-    this.keyboard.setGameplayActive(true);
+    this.lastSecondsLeft = -1;
+    this.setGameplayActive(true);
+    this.audio.matchStarted();
     this.publishHud();
   }
 
-  /** Releases listeners, the ticker, the canvas and every display object (R66). */
+  /** Releases listeners, the ticker, sounds, the canvas and every display object (R66). */
   destroy(): void {
     if (this.destroyed) return;
     this.destroyed = true;
     this.stage.app.ticker.remove(this.tick);
     this.keyboard.detach();
+    this.touch.setGameplayActive(false);
     window.removeEventListener('blur', this.handleWindowBlur);
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    this.audio.dispose();
     this.eventListeners.clear();
     this.hud.clear();
     this.stage.destroy();
@@ -147,34 +174,65 @@ export class GameSession {
     return new FixedStepClock(stepMs, maxFrameDeltaMs);
   }
 
+  /** Keyboard and touch are always switched together, and both forget held buttons. */
+  private setGameplayActive(active: boolean): void {
+    this.keyboard.setGameplayActive(active);
+    this.touch.setGameplayActive(active);
+  }
+
   private readonly tick = (ticker: Ticker): void => {
-    if (this.status === 'running') {
-      this.keyboard.read(this.input);
+    const running = this.status === 'running';
+    if (running) {
       const steps = this.clock.consumeFrame(ticker.deltaMS);
+      // Read input only when a step will use it, so a quick tap is never consumed by a frame
+      // that runs zero steps (possible on 120 Hz+ screens).
+      if (steps > 0) this.readInput();
       for (let i = 0; i < steps; i++) this.match.step(this.input);
       this.dispatch(this.match.drainEvents());
+      this.audio.setSailing(this.input.forward && this.status === 'running');
     }
-    this.entities.sync(this.match.state);
+    // Cosmetic animation freezes while paused, like the simulation.
+    const visualDtMs = running ? ticker.deltaMS : 0;
+    this.entities.sync(this.match.state, visualDtMs);
+    this.stage.updateShake(visualDtMs);
     this.publishHud();
   };
 
+  private readInput(): void {
+    Object.assign(this.input, EMPTY_INPUT);
+    this.keyboard.readInto(this.input);
+    this.touch.readInto(this.input);
+  }
+
   private dispatch(events: readonly GameEvent[]): void {
+    const state = this.match.state;
     for (const event of events) {
+      this.entities.handleEvent(event, state);
+      this.audio.handleEvent(event, state);
+      if (event.type === 'playerDamaged' && !prefersReducedMotion()) {
+        this.stage.shake(HIT_SHAKE_PX, HIT_SHAKE_MS);
+      }
       if (event.type === 'matchEnded') {
         this.status = 'ended';
-        this.keyboard.setGameplayActive(false);
+        this.setGameplayActive(false);
       }
       for (const listener of this.eventListeners) listener(event);
     }
   }
 
   private publishHud(): void {
-    this.hud.publish(this.buildHud());
+    const next = this.buildHud(this.hud.getSnapshot().result);
+    if (next.secondsLeft !== this.lastSecondsLeft) {
+      if (this.lastSecondsLeft !== -1 && this.status === 'running') {
+        this.audio.secondsLeftChanged(next.secondsLeft);
+      }
+      this.lastSecondsLeft = next.secondsLeft;
+    }
+    this.hud.publish(next);
   }
 
-  private buildHud(): HudSnapshot {
+  private buildHud(previousResult: HudSnapshot['result']): HudSnapshot {
     const { state } = this.match;
-    const previous = this.status === 'ended' ? this.hud.getSnapshot().result : null;
     return {
       status: this.status,
       pauseReason: this.pauseReason,
@@ -184,10 +242,9 @@ export class GameSession {
       maxHealth: state.player.maxHealth,
       // Keep the same result object once created, so the store sees "no change" afterwards.
       result:
-        previous ??
-        (state.endReason === null
+        state.endReason === null
           ? null
-          : {
+          : (previousResult ?? {
               score: state.score,
               elapsedMs: state.elapsedMs,
               endReason: state.endReason,

@@ -27,6 +27,7 @@ export function destroyEnemy(ctx: StepContext, enemy: Enemy, byPlayer: boolean):
     kind: enemy.kind,
     x: enemy.x,
     y: enemy.y,
+    rotation: enemy.rotation,
     byPlayer,
   });
   if (byPlayer) {

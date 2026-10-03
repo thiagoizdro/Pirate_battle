@@ -29,6 +29,7 @@ export type GameEvent =
       kind: EnemyKind;
       x: number;
       y: number;
+      rotation: number;
       /** False when a Chaser blew itself up on the player: no point is scored (R31). */
       byPlayer: boolean;
     }

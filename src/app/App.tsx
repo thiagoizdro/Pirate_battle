@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { audioEngine } from '../game/audio/AudioEngine';
 import { GameScreen } from '../ui/screens/GameScreen';
 
 type Screen = 'menu' | 'game';
@@ -24,6 +25,8 @@ export function App() {
       <button
         type="button"
         onClick={() => {
+          // Browsers only allow audio after a user gesture: unlock it inside this click.
+          audioEngine.unlock();
           setScreen('game');
         }}
       >

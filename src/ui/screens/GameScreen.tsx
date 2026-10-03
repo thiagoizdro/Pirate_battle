@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { audioEngine } from '../../game/audio/AudioEngine';
 import { DEFAULT_OPTIONS } from '../../game/config';
 import type { GameSession } from '../../game/GameSession';
 import { DevLifecyclePanel } from '../dev/DevLifecyclePanel';
 import { END_REASON_LABEL, formatClock } from '../format';
+import { MuteButton, VolumeControl } from '../game/AudioControls';
 import { GameCanvas } from '../game/GameCanvas';
+import { TouchControls } from '../game/TouchControls';
 import { useGameAssets } from '../game/useGameAssets';
 import { useHud } from '../game/useHud';
 import styles from './GameScreen.module.css';
@@ -13,7 +16,12 @@ interface GameScreenProps {
   onExit: () => void;
 }
 
-/** Phase 2 version: functional HUD, pause and end overlays. Final visuals arrive in Phase 4. */
+/** Touch buttons appear on touch screens (coarse pointer), or anywhere with `?touch`. */
+const showTouchControls =
+  window.matchMedia('(pointer: coarse)').matches ||
+  new URLSearchParams(window.location.search).has('touch');
+
+/** Phase 3 version: functional HUD, pause and end overlays. Final visuals arrive in Phase 4. */
 export function GameScreen({ onExit }: GameScreenProps) {
   const { state, retry } = useGameAssets();
   const [rendererError, setRendererError] = useState<string | null>(null);
@@ -31,6 +39,11 @@ export function GameScreen({ onExit }: GameScreenProps) {
     if (hud.status === 'paused') resumeRef.current?.focus();
     if (hud.status === 'ended') restartRef.current?.focus();
   }, [hud.status]);
+
+  // Sounds load in the background; a failure only means silence, never a blocked game.
+  useEffect(() => {
+    void audioEngine.load();
+  }, []);
 
   const errorMessage = rendererError ?? (state.status === 'error' ? state.message : null);
 
@@ -53,6 +66,7 @@ export function GameScreen({ onExit }: GameScreenProps) {
           </span>
           <span>Score {hud.score}</span>
           <span>Time {formatClock(hud.secondsLeft)}</span>
+          <MuteButton className={styles.pushRight} />
           <button
             type="button"
             onClick={() => {
@@ -65,6 +79,10 @@ export function GameScreen({ onExit }: GameScreenProps) {
         </div>
       )}
 
+      {session && showTouchControls && hud.status === 'running' && (
+        <TouchControls touch={session.touch} />
+      )}
+
       {session && hud.status === 'paused' && (
         <div
           className={styles.overlay}
@@ -73,6 +91,7 @@ export function GameScreen({ onExit }: GameScreenProps) {
           aria-labelledby="pause-title"
         >
           <h2 id="pause-title">Paused</h2>
+          <VolumeControl />
           <div className={styles.actions}>
             <button
               ref={resumeRef}

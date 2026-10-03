@@ -1,10 +1,11 @@
 import type { InputState } from '../simulation/types';
+import { HeldActions, type Action } from './HeldActions';
 
 /**
  * Physical keys (KeyboardEvent.code) mapped to game actions. `code` ignores the keyboard layout,
  * so WASD stays in the same place on AZERTY or Dvorak keyboards.
  */
-const BINDINGS: Readonly<Record<string, keyof InputState>> = {
+const BINDINGS: Readonly<Record<string, Action>> = {
   KeyW: 'forward',
   ArrowUp: 'forward',
   KeyA: 'turnLeft',
@@ -19,12 +20,11 @@ const BINDINGS: Readonly<Record<string, keyof InputState>> = {
 const PAUSE_CODES = new Set(['KeyP', 'Escape']);
 
 /**
- * Turns keyboard events into an InputState. Several keys can be held at once, so moving and
+ * Turns keyboard events into game actions. Several keys can be held at once, so moving and
  * firing work together (R16). Game keys are captured only while gameplay is active (R105).
  */
 export class KeyboardInput {
-  /** Codes currently held down. Two keys can map to one action (W and ArrowUp). */
-  private readonly pressed = new Set<string>();
+  private readonly actions = new HeldActions();
   private gameplayActive = false;
   private attached = false;
   private readonly onPauseKey: () => void;
@@ -45,31 +45,17 @@ export class KeyboardInput {
     this.attached = false;
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('keyup', this.handleKeyUp);
-    this.reset();
+    this.actions.reset();
   }
 
   /** Turning gameplay on or off always forgets held keys, so nothing replays after a pause (R40). */
   setGameplayActive(active: boolean): void {
     this.gameplayActive = active;
-    this.reset();
+    this.actions.reset();
   }
 
-  reset(): void {
-    this.pressed.clear();
-  }
-
-  /** Writes the current state into `out` (reused every frame to avoid allocations). */
-  read(out: InputState): void {
-    out.forward = false;
-    out.turnLeft = false;
-    out.turnRight = false;
-    out.fireFront = false;
-    out.fireLeft = false;
-    out.fireRight = false;
-    for (const code of this.pressed) {
-      const action = BINDINGS[code];
-      if (action) out[action] = true;
-    }
+  readInto(out: InputState): void {
+    this.actions.readInto(out);
   }
 
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
@@ -80,15 +66,17 @@ export class KeyboardInput {
       if (!event.repeat) this.onPauseKey();
       return;
     }
-    if (!this.gameplayActive || !(event.code in BINDINGS)) return;
+    const action = BINDINGS[event.code];
+    if (!this.gameplayActive || !action) return;
     // Stops Space from scrolling the page or clicking a focused button during combat.
     event.preventDefault();
-    this.pressed.add(event.code);
+    this.actions.press(action, event.code);
   };
 
   private readonly handleKeyUp = (event: KeyboardEvent): void => {
-    if (!(event.code in BINDINGS)) return;
-    this.pressed.delete(event.code);
+    const action = BINDINGS[event.code];
+    if (!action) return;
+    this.actions.release(action, event.code);
     if (this.gameplayActive) event.preventDefault();
   };
 }

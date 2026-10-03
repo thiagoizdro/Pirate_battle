@@ -1,0 +1,63 @@
+.controls {
+  position: absolute;
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+/* Three buttons in a "V": the middle one (forward / front cannon) sits higher, as in sample.png. */
+.cluster {
+  display: grid;
+  grid-template-columns: repeat(3, var(--touch-size));
+  grid-template-rows: var(--touch-size) var(--touch-size);
+  gap: 4px 8px;
+  pointer-events: auto;
+}
+
+.controls {
+  --touch-size: clamp(48px, 9vmin, 72px);
+}
+
+.button {
+  grid-row: 2;
+  width: var(--touch-size);
+  height: var(--touch-size);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: url('/assets/ui/controls/button_round_normal.png') center / contain no-repeat;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.button[data-pressed] {
+  background-image: url('/assets/ui/controls/button_round_pressed.png');
+}
+
+.turnLeft,
+.fireLeft {
+  grid-column: 1;
+}
+
+.forward,
+.fireFront {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.turnRight,
+.fireRight {
+  grid-column: 3;
+}
+
+.button img {
+  width: 50%;
+  height: 50%;
+  pointer-events: none;
+}

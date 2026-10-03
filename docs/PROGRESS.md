@@ -115,6 +115,8 @@ Done:
 - Documentation: README.md, ARCHITECTURE.md, docs/PERFORMANCE.md (with the author's template), docs/CREDITS.md, docs/CHECKLIST.md (R1–R135 → implementation → test), docs/reports/.
 - Deploy preparation: `vercel.json` (Vite, `npm ci`, `npm run build`, `dist`, SPA rewrite, no-cache service worker).
 - Extra E2E assertion for R105 (typing "p", "e", "q" in the pause options neither resumes nor fires).
+- Fix found by the clean-clone run: changing the network scenario now cancels list requests (and their pending retries) before refetching; before, a list with no data could finish its old retry cycle with an error after the network had recovered.
+- Clean clone verification (`git clone` → `npm ci` → lint, format check, typecheck, build, 154 unit tests, 58 E2E passed / 1 skipped by design, no retries): all green.
 
 Pending (author):
 

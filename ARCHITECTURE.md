@@ -147,7 +147,7 @@ The ranking only compares matches with the same `configKey` (the two options plu
 
 - The same handlers run in the browser (service worker, started before React renders, **also in the published build**) and in Node (`msw/node`) for integration tests (R86, R96). The worker script is in `public/` and is served without caching.
 - The mock DB keeps fixtures plus confirmed records in `localStorage`, so both tabs read the same data and confirmed records survive a refresh. **Reset mock data** restores the fixtures.
-- Scenarios (success, empty, multiple pages, slow, variable latency, out-of-order, timeout, connection failure, 4xx, 5xx, ranking failure, history failure, timeout after save, unavailable then recovers) are chosen in the Network panel or with `?scenario=&seed=`. Latency and randomness come from a seeded RNG and counters that reset when the scenario changes (R95). "Slow" latency is half the client timeout, so it is slow without timing out in any build.
+- Scenarios (success, empty, multiple pages, slow, variable latency, out-of-order, timeout, connection failure, 4xx, 5xx, ranking failure, history failure, timeout after save, unavailable then recovers) are chosen in the Network panel or with `?scenario=&seed=`. Latency and randomness come from a seeded RNG and counters that reset when the scenario changes (R95). "Slow" latency is half the client timeout, so it is slow without timing out in any build. Changing the scenario cancels list requests in flight (with their pending retries) and refetches, and immediately retries pending registrations.
 
 ## 11. Testing strategy
 

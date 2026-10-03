@@ -8,7 +8,7 @@
 | 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done        |
 | 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Done        |
 | 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Done        |
-| 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Not started |
+| 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Done        |
 | 7     | Delivery: deploy, docs, reports, final checklist                                 | Not started |
 
 ## Phase 0: Analysis
@@ -92,3 +92,16 @@ Done:
 Verified in Chromium (dev and production preview): match registration updates both tabs; connection failure → status failed → switching to success registers it immediately; failed record survives a reload and is sent on start; timeout-after-save adds exactly one record; ranking failure shows error + Retry; multiple pages paginate; production preview console is empty in the success scenario.
 
 Pending: Playwright suite and test instrumentation (Phase 6).
+
+## Phase 6: Playwright
+
+Done:
+
+- Test instrumentation (`src/game/testHooks.ts`): `window.__PIRATE_TEST__` with read-only state, freeze/step/advance, seed, balancing overrides and enemy placement; present only when built with `--mode e2e` (removed from the normal bundle).
+- Playwright config: e2e build served by `vite preview`, projects `desktop-chromium` (all specs) and `mobile-chromium` (Pixel 7 landscape, `@main` flows), HTML report, trace and screenshot on failure, reduced motion, automatic failure on unexpected console errors.
+- 13 spec files: the 12 README areas plus visual regression (menu, seeded frozen arena, result) with committed baselines for both projects.
+- Fixes found by the tests: pagination used the placeholder page while the next page loaded (now uses the requested page); mock "slow" latency could exceed the client timeout (now half the timeout).
+
+Result: 58 passed, 1 skipped (touch test on desktop by design), about 6 minutes with 2 workers; 151 unit tests passing.
+
+Commands: `npm run test:e2e`, `npm run test:e2e:update` (baselines), `npm run test:e2e:report`.

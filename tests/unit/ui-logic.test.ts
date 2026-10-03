@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createMatchRecord } from '../../src/app/matchRecord';
 import { parseHash, routeToHash } from '../../src/app/router';
 import type { HudSnapshot } from '../../src/game/bridge';
+import { formatPlayedAt } from '../../src/ui/format';
 import { describeHudChange } from '../../src/ui/game/announcements';
 
 describe('router', () => {
@@ -109,5 +110,17 @@ describe('createMatchRecord', () => {
       config: { sessionSeconds: 150, spawnIntervalSeconds: 2.5, balanceVersion: 1 },
       configKey: 'v1-150s-2.5s',
     });
+  });
+});
+
+describe('formatPlayedAt', () => {
+  it('uses a fixed "DD MON" date and "HH:MM" time', () => {
+    const { date, time } = formatPlayedAt('2026-09-08T12:05:00.000Z');
+    expect(date).toMatch(/^\d{2} (JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$/);
+    expect(time).toMatch(/^\d{2}:\d{2}$/);
+  });
+
+  it('handles invalid dates', () => {
+    expect(formatPlayedAt('not a date')).toEqual({ date: '—', time: '' });
   });
 });

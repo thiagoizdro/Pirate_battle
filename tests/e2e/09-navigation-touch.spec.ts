@@ -54,7 +54,7 @@ test.describe('Area 9: abandoning, repeated navigation and touch controls', () =
     expect(await page.evaluate(() => window.__PIRATE_TEST__?.hasSession())).toBe(true);
   });
 
-  test('touch buttons steer and fire, with several fingers at once @main', async ({
+  test('joystick and weapon buttons work with several fingers at once @main', async ({
     page,
     isMobile,
   }) => {
@@ -64,13 +64,18 @@ test.describe('Area 9: abandoning, repeated navigation and touch controls', () =
     await expect(page.getByTestId('touch-controls')).toBeVisible();
     const start = await state(page);
 
-    // Two fingers: one holds "Sail forward", the other holds "Fire front cannon".
+    // Real touch events become pointer events: one finger steers, the other fires.
     const centre = async (name: string) => {
       const box = await page.getByRole('button', { name }).boundingBox();
       if (!box) throw new Error(`${name} not visible`);
       return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
     };
-    const forward = await centre('Sail forward');
+    const joystick = await page.getByTestId('sailing-joystick').boundingBox();
+    if (!joystick) throw new Error('Joystick not visible');
+    const forward = {
+      x: joystick.x + joystick.width / 2,
+      y: joystick.y + joystick.height * 0.2,
+    };
     const fire = await centre('Fire front cannon');
     const cdp = await page.context().newCDPSession(page);
     await cdp.send('Input.dispatchTouchEvent', {

@@ -9,7 +9,7 @@
   pointer-events: none;
 }
 
-/* Three buttons in a "V": the middle one (forward / front cannon) sits higher, as in sample.png. */
+/* Keep the existing weapon buttons in a V, with the front cannon above the broadsides. */
 .cluster {
   display: grid;
   grid-template-columns: repeat(3, var(--touch-size));
@@ -20,6 +20,38 @@
 
 .controls {
   --touch-size: clamp(48px, 9vmin, 72px);
+}
+
+.joystick {
+  position: relative;
+  width: clamp(120px, 28vmin, 152px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: url('/assets/ui/controls/button_round_normal.png') center / contain no-repeat;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: auto;
+}
+
+.stick {
+  position: absolute;
+  left: 30%;
+  top: 30%;
+  width: 40%;
+  height: 40%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: url('/assets/ui/controls/button_round_pressed.png') center / contain no-repeat;
+  transform: translate(var(--stick-x, 0px), var(--stick-y, 0px));
+  pointer-events: none;
+}
+
+.stick img {
+  width: 50%;
+  height: 50%;
 }
 
 .button {
@@ -40,18 +72,15 @@
   background-image: url('/assets/ui/controls/button_round_pressed.png');
 }
 
-.turnLeft,
 .fireLeft {
   grid-column: 1;
 }
 
-.forward,
 .fireFront {
   grid-row: 1;
   grid-column: 2;
 }
 
-.turnRight,
 .fireRight {
   grid-column: 3;
 }

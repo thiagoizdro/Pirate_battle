@@ -1,0 +1,27 @@
+.score {
+  font-size: clamp(48px, 10vmin, 88px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--color-gold);
+  text-shadow: 0 3px 0 #3a2410;
+}
+
+.facts {
+  font-size: clamp(12px, 1.8vmin, 15px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 1vmin, 10px);
+}
+
+@media (max-height: 480px) {
+  .actions {
+    flex-direction: row;
+  }
+}

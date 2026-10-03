@@ -1,0 +1,23 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.row input[type='range'] {
+  width: min(180px, 40vw);
+  accent-color: var(--color-gold);
+}
+
+/* Pressed (muted) state uses the gold look so the toggle is visible without colour alone. */
+.row button[aria-pressed='true'] {
+  color: var(--color-ink);
+  background-image: url('/assets/ui/menu/button_primary_normal.png');
+}
+
+.row button[aria-pressed='true']::after {
+  content: ' ✓';
+}

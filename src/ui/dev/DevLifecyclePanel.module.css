@@ -1,7 +1,7 @@
 .panel {
   position: absolute;
   left: 50%;
-  bottom: 12px;
+  top: clamp(44px, 8vmin, 72px);
   transform: translateX(-50%);
   display: flex;
   align-items: center;

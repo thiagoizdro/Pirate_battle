@@ -1,172 +1,229 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
 import { audioEngine } from '../../game/audio/AudioEngine';
-import { DEFAULT_OPTIONS } from '../../game/config';
+import type { MatchResult } from '../../game/bridge';
+import type { GameOptions } from '../../game/config';
 import type { GameSession } from '../../game/GameSession';
+import { Dialog } from '../components/Dialog';
+import { GameButton } from '../components/GameButton';
+import { Panel } from '../components/Panel';
 import { DevLifecyclePanel } from '../dev/DevLifecyclePanel';
-import { END_REASON_LABEL, formatClock } from '../format';
-import { MuteButton, VolumeControl } from '../game/AudioControls';
+import { GameAnnouncer } from '../game/GameAnnouncer';
 import { GameCanvas } from '../game/GameCanvas';
+import { Hud } from '../game/Hud';
 import { TouchControls } from '../game/TouchControls';
 import { useGameAssets } from '../game/useGameAssets';
 import { useHud } from '../game/useHud';
+import { OptionsForm } from '../options/OptionsForm';
 import styles from './GameScreen.module.css';
 
-interface GameScreenProps {
-  onExit: () => void;
+/** Touch buttons appear on touch screens (coarse pointer), or anywhere with `?touch`. */
+const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
+const showTouchControls = isTouchScreen || new URLSearchParams(window.location.search).has('touch');
+
+/** Portrait on a touch device is not supported (A21): show a message and pause. */
+const PORTRAIT_QUERY = '(orientation: portrait) and (pointer: coarse)';
+
+/** Time to watch the final explosion before the result screen (shorter with reduced motion). */
+function resultDelayMs(): number {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 1500;
 }
 
-/** Touch buttons appear on touch screens (coarse pointer), or anywhere with `?touch`. */
-const showTouchControls =
-  window.matchMedia('(pointer: coarse)').matches ||
-  new URLSearchParams(window.location.search).has('touch');
+interface GameScreenProps {
+  /** Snapshot of the options when the battle started; later changes apply to the next one. */
+  options: GameOptions;
+  playerName: string;
+  /** Called once, as soon as the match ends, so the result is saved before anything else. */
+  onMatchEnded: (result: MatchResult) => void;
+  /** Called a moment later to show the result screen. */
+  onShowResult: () => void;
+  /** Leaving mid-battle abandons it: nothing is saved or registered (R57). */
+  onExit: () => void;
+  onSaveOptions: (options: GameOptions, playerName: string) => void;
+}
 
-/** Phase 3 version: functional HUD, pause and end overlays. Final visuals arrive in Phase 4. */
-export function GameScreen({ onExit }: GameScreenProps) {
+export function GameScreen({
+  options,
+  playerName,
+  onMatchEnded,
+  onShowResult,
+  onExit,
+  onSaveOptions,
+}: GameScreenProps) {
   const { state, retry } = useGameAssets();
   const [rendererError, setRendererError] = useState<string | null>(null);
   const [session, setSession] = useState<GameSession | null>(null);
   const hud = useHud(session);
+  const [pauseView, setPauseView] = useState<'menu' | 'options'>('menu');
+  const pauseTitleId = useId();
+  const optionsTitleId = useId();
+  // Options are frozen when the battle screen opens (R54).
+  const [battleOptions] = useState(options);
+
   // Changing the key unmounts and remounts the canvas: used by the dev panel to check for leaks.
   const [mountKey, setMountKey] = useState(0);
   const remount = useCallback(() => {
     setMountKey((key) => key + 1);
   }, []);
 
-  const resumeRef = useRef<HTMLButtonElement>(null);
-  const restartRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (hud.status === 'paused') resumeRef.current?.focus();
-    if (hud.status === 'ended') restartRef.current?.focus();
-  }, [hud.status]);
-
   // Sounds load in the background; a failure only means silence, never a blocked game.
   useEffect(() => {
     void audioEngine.load();
   }, []);
 
+  // Save the result once when the match ends, then show the result screen after a moment.
+  // The ref guard matters in React Strict Mode, which runs effects twice in development.
+  const handledResult = useRef<MatchResult | null>(null);
+  useEffect(() => {
+    const result = hud.result;
+    if (!result) return;
+    if (handledResult.current !== result) {
+      handledResult.current = result;
+      onMatchEnded(result);
+    }
+    const timer = window.setTimeout(onShowResult, resultDelayMs());
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [hud.result, onMatchEnded, onShowResult]);
+
+  // Pause automatically when a phone is turned to portrait.
+  useEffect(() => {
+    if (!session) return;
+    const query = window.matchMedia(PORTRAIT_QUERY);
+    const check = () => {
+      if (query.matches) session.pause('orientation');
+    };
+    check();
+    query.addEventListener('change', check);
+    return () => {
+      query.removeEventListener('change', check);
+    };
+  }, [session]);
+
+  const resume = useCallback(() => {
+    setPauseView('menu');
+    session?.resume();
+  }, [session]);
+
   const errorMessage = rendererError ?? (state.status === 'error' ? state.message : null);
 
   return (
     <main className={styles.screen} aria-label="Battle">
+      <h1 className="visually-hidden">Battle</h1>
       {state.status === 'ready' && rendererError === null && (
         <GameCanvas
           key={mountKey}
           assets={state.assets}
-          options={DEFAULT_OPTIONS}
+          options={battleOptions}
           onSessionChange={setSession}
           onError={setRendererError}
         />
       )}
 
       {session && (
-        <div className={styles.hud}>
-          <span>
-            Health {hud.health}/{hud.maxHealth}
-          </span>
-          <span>Score {hud.score}</span>
-          <span>Time {formatClock(hud.secondsLeft)}</span>
-          <MuteButton className={styles.pushRight} />
-          <button
-            type="button"
-            onClick={() => {
-              session.pause('manual');
-            }}
-            disabled={hud.status !== 'running'}
-          >
-            Pause
-          </button>
-        </div>
+        <Hud
+          hud={hud}
+          onPause={() => {
+            session.pause('manual');
+          }}
+        />
       )}
+      <GameAnnouncer session={session} />
 
-      {session && showTouchControls && hud.status === 'running' && (
+      {session && hud.status === 'running' && showTouchControls && (
         <TouchControls touch={session.touch} />
       )}
-
-      {session && hud.status === 'paused' && (
-        <div
-          className={styles.overlay}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="pause-title"
-        >
-          <h2 id="pause-title">Paused</h2>
-          <VolumeControl />
-          <div className={styles.actions}>
-            <button
-              ref={resumeRef}
-              type="button"
-              onClick={() => {
-                session.resume();
-              }}
-            >
-              Resume
-            </button>
-            <button type="button" onClick={onExit}>
-              Main Menu
-            </button>
-          </div>
-        </div>
+      {session && hud.status === 'running' && !isTouchScreen && (
+        <p className={styles.hint}>
+          W/↑ sail · A/D turn · Space front cannon · Q/E broadsides · P pause
+        </p>
       )}
 
-      {session && hud.result && (
-        <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="end-title">
-          <h2 id="end-title">{END_REASON_LABEL[hud.result.endReason]}</h2>
-          <p>
-            Score {hud.result.score} · Time played {formatClock(hud.result.elapsedMs / 1000)}
-          </p>
+      {session && hud.status === 'paused' && pauseView === 'menu' && (
+        <Dialog key="pause" labelledBy={pauseTitleId} onEscape={resume}>
+          <h2 id={pauseTitleId} className="screen-title">
+            Paused
+          </h2>
+          <p>Ready when you are.</p>
           <div className={styles.actions}>
-            <button
-              ref={restartRef}
-              type="button"
+            <GameButton onClick={resume}>Resume</GameButton>
+            <GameButton
               onClick={() => {
-                session.restart();
+                setPauseView('options');
               }}
             >
-              Play Again
-            </button>
-            <button type="button" onClick={onExit}>
-              Main Menu
-            </button>
+              Options
+            </GameButton>
+            <GameButton onClick={onExit}>Main Menu</GameButton>
           </div>
-        </div>
+        </Dialog>
+      )}
+
+      {session && hud.status === 'paused' && pauseView === 'options' && (
+        <Dialog
+          key="options"
+          labelledBy={optionsTitleId}
+          onEscape={() => {
+            setPauseView('menu');
+          }}
+        >
+          <OptionsForm
+            titleId={optionsTitleId}
+            headingLevel={2}
+            initialOptions={options}
+            initialName={playerName}
+            onSave={onSaveOptions}
+            onClose={() => {
+              setPauseView('menu');
+            }}
+            closeLabel="Back"
+          />
+        </Dialog>
       )}
 
       {state.status === 'loading' && (
         <div className={styles.overlay}>
-          <p id="loading-label">Loading the fleet…</p>
-          <div
-            className={styles.progress}
-            role="progressbar"
-            aria-labelledby="loading-label"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(state.progress * 100)}
-          >
-            <div className={styles.progressFill} style={{ width: `${state.progress * 100}%` }} />
-          </div>
+          <Panel>
+            <p id="loading-label" className="screen-subtitle">
+              Loading the fleet…
+            </p>
+            <div
+              className={styles.progress}
+              role="progressbar"
+              aria-labelledby="loading-label"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(state.progress * 100)}
+            >
+              <div className={styles.progressFill} style={{ width: `${state.progress * 100}%` }} />
+            </div>
+          </Panel>
         </div>
       )}
 
       {errorMessage !== null && (
-        <div className={styles.overlay} role="alert">
-          <p>{errorMessage}</p>
-          <div className={styles.actions}>
-            <button
-              type="button"
+        <div className={styles.overlay}>
+          <Panel role="alert">
+            <p>{errorMessage}</p>
+            <GameButton
               onClick={() => {
                 setRendererError(null);
                 retry();
               }}
             >
               Retry
-            </button>
-            <button type="button" onClick={onExit}>
+            </GameButton>
+            <GameButton variant="secondary" onClick={onExit}>
               Main Menu
-            </button>
-          </div>
+            </GameButton>
+          </Panel>
         </div>
       )}
+
+      <div className={styles.rotate} role="alert">
+        <p>Rotate your device to landscape to play.</p>
+      </div>
 
       {import.meta.env.DEV && <DevLifecyclePanel onRemount={remount} />}
     </main>

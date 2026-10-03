@@ -1,14 +1,21 @@
 :root {
   --color-letterbox: #0b1a2b;
-  --color-panel-dark: #1b2a3d;
-  --color-gold: #f2b544;
-  --color-text: #f6ead2;
+  --color-panel-dark: #17263a;
+  --color-row: #1c2c41;
+  --color-row-highlight: #4a4530;
+  --color-gold: #f2c46b;
+  --color-cream: #f6ead2;
+  --color-muted: #c4cdd8;
+  --color-ink: #2b1a0c;
+  --color-danger: #ffb4a6;
+  --color-success: #b8e6a1;
   --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   color-scheme: dark;
   font-family: var(--font-ui);
-  color: var(--color-text);
+  color: var(--color-cream);
   background: var(--color-letterbox);
+  -webkit-text-size-adjust: 100%;
 }
 
 *,
@@ -29,21 +36,56 @@ body {
   background: var(--color-letterbox);
 }
 
-button {
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button,
+input {
   font: inherit;
+}
+
+button {
   cursor: pointer;
 }
 
-:focus-visible {
-  outline: 3px solid var(--color-gold);
-  outline-offset: 2px;
+button:disabled {
+  cursor: not-allowed;
 }
 
-.placeholder-menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  height: 100%;
+/* Visible focus for keyboard users everywhere (R103). */
+:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Headings receive focus on screen changes for screen readers; no outline needed there. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* Text for screen readers only. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

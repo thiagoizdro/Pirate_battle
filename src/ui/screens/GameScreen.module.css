@@ -1,42 +1,23 @@
 .screen {
   position: fixed;
   inset: 0;
+  overflow: hidden;
   background: var(--color-letterbox);
-}
-
-.hud {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 6px 12px;
-  background: rgb(11 26 43 / 75%);
-  border-radius: 8px;
-  font-variant-numeric: tabular-nums;
-}
-
-.pushRight {
-  margin-left: auto;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
+  z-index: 10;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 16px;
-  text-align: center;
-  background: rgb(11 26 43 / 85%);
+  padding: 12px;
+  background: var(--color-letterbox);
 }
 
 .progress {
-  width: min(320px, 80vw);
+  width: min(320px, 70vw);
   height: 16px;
   border: 2px solid var(--color-gold);
   border-radius: 8px;
@@ -52,11 +33,50 @@
 
 .actions {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 1vmin, 10px);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .progressFill {
-    transition: none;
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+  color: var(--color-cream);
+  background: rgb(5 15 28 / 70%);
+  pointer-events: none;
+}
+
+/* Hidden unless a touch device is in portrait (A21). */
+.rotate {
+  display: none;
+}
+
+@media (orientation: portrait) and (pointer: coarse) {
+  .rotate {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    background: var(--color-letterbox);
+  }
+}
+
+@media (max-height: 480px) {
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

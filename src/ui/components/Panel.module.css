@@ -1,0 +1,29 @@
+/*
+ * panel_menu.png (2x) has 9-slice borders of 32 px left/right and 40 px top/bottom in logical
+ * units, which is 64 / 80 px in the 2x image: the slice values below use image pixels.
+ */
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.8vmin, 16px);
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  padding: clamp(4px, 1.5vmin, 16px) clamp(4px, 2vmin, 20px);
+  border-style: solid;
+  border-width: 40px 32px;
+  border-image: url('/assets/ui/menu/panel_menu.png') 80 64 fill / 40px 32px stretch;
+  text-align: center;
+}
+
+.wide {
+  width: min(1100px, calc(100vw - 24px));
+}
+
+@media (max-height: 480px) {
+  .panel {
+    border-width: 28px 22px;
+    border-image-width: 28px 22px;
+  }
+}

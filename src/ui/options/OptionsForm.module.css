@@ -1,0 +1,93 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.4vmin, 12px);
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.label {
+  font-weight: 700;
+  font-size: clamp(13px, 1.9vmin, 16px);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.numberWrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: clamp(18px, 2.8vmin, 24px);
+  font-weight: 800;
+}
+
+.number,
+.text {
+  border: 2px solid #6b5a3a;
+  border-radius: 6px;
+  color: var(--color-cream);
+  background: rgb(0 0 0 / 30%);
+}
+
+.number {
+  width: 3.6em;
+  padding: 2px 4px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.text {
+  width: min(260px, 100%);
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.number[aria-invalid='true'],
+.text[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.hint {
+  font-size: clamp(11px, 1.5vmin, 13px);
+  color: var(--color-muted);
+}
+
+.error {
+  font-size: clamp(12px, 1.6vmin, 14px);
+  font-weight: 700;
+  color: var(--color-danger);
+}
+
+.sound {
+  font-size: clamp(13px, 1.8vmin, 15px);
+}
+
+.note {
+  font-size: clamp(11px, 1.5vmin, 13px);
+  color: var(--color-muted);
+}
+
+.status {
+  min-height: 1.2em;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}

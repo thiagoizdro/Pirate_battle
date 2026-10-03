@@ -1,0 +1,81 @@
+.hud {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  left: max(8px, env(safe-area-inset-left));
+  right: max(8px, env(safe-area-inset-right));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+  --hud-height: clamp(30px, 6vmin, 56px);
+}
+
+.hud button {
+  pointer-events: auto;
+}
+
+.health {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heart {
+  width: calc(var(--hud-height) * 0.85);
+  height: auto;
+}
+
+/* health_frame art is 256x48. */
+.bar {
+  position: relative;
+  height: var(--hud-height);
+  aspect-ratio: 256 / 48;
+  background: url('/assets/ui/hud/health_frame.png') center / 100% 100% no-repeat;
+}
+
+/* The fill art has the same size as the frame; this box shows only its left part. */
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  overflow: hidden;
+  background: left center / auto 100% no-repeat;
+}
+
+.barText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--hud-height) * 0.34);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 1vmin, 12px);
+}
+
+/* counter_panel art is 160x56. */
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: var(--hud-height);
+  aspect-ratio: 160 / 56;
+  background: url('/assets/ui/hud/counter_panel.png') center / 100% 100% no-repeat;
+  font-size: calc(var(--hud-height) * 0.42);
+  font-weight: 800;
+  color: var(--color-cream);
+}
+
+.counter img {
+  width: calc(var(--hud-height) * 0.5);
+  height: auto;
+}

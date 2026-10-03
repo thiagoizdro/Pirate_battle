@@ -19,6 +19,13 @@ const BINDINGS: Readonly<Record<string, Action>> = {
 
 const PAUSE_CODES = new Set(['KeyP', 'Escape']);
 
+function isEditable(target: EventTarget | null): boolean {
+  return (
+    target instanceof HTMLElement &&
+    (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
+  );
+}
+
 /**
  * Turns keyboard events into game actions. Several keys can be held at once, so moving and
  * firing work together (R16). Game keys are captured only while gameplay is active (R105).
@@ -61,6 +68,10 @@ export class KeyboardInput {
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
     // Leave browser and OS shortcuts (Ctrl+R, Cmd+W...) alone.
     if (event.ctrlKey || event.metaKey || event.altKey) return;
+    // A dialog already handled this key (e.g. Escape closing the options panel).
+    if (event.defaultPrevented) return;
+    // Typing "p" or "e" in a text field (the captain name) must not control the ship.
+    if (isEditable(event.target)) return;
     if (PAUSE_CODES.has(event.code)) {
       event.preventDefault();
       if (!event.repeat) this.onPauseKey();

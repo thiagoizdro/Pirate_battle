@@ -1,32 +1,17 @@
 import { useId } from 'react';
 
 import { audioEngine } from '../../game/audio/AudioEngine';
+import { GameButton } from '../components/GameButton';
+import styles from './AudioControls.module.css';
 import { useAudioSettings } from './useAudioSettings';
 
-/** Mute toggle. `aria-pressed` tells screen readers whether sound is currently muted. */
-export function MuteButton({ className }: { className?: string | undefined }) {
-  const { muted } = useAudioSettings();
-  return (
-    <button
-      type="button"
-      className={className}
-      aria-pressed={muted}
-      onClick={() => {
-        audioEngine.setMuted(!muted);
-      }}
-    >
-      {muted ? 'Sound off' : 'Sound on'}
-    </button>
-  );
-}
-
-/** Labelled volume slider (0–100 %) plus the mute toggle. */
+/** Labelled volume slider (0–100 %) plus a mute toggle; both are saved (R45). */
 export function VolumeControl() {
   const { volume, muted } = useAudioSettings();
   const id = useId();
   return (
-    <div>
-      <label htmlFor={id}>Volume</label>{' '}
+    <div className={styles.row}>
+      <label htmlFor={id}>Volume</label>
       <input
         id={id}
         type="range"
@@ -34,12 +19,22 @@ export function VolumeControl() {
         max={100}
         step={5}
         value={Math.round(volume * 100)}
-        aria-valuetext={muted ? 'Muted' : `${Math.round(volume * 100)}%`}
+        aria-valuetext={`${Math.round(volume * 100)}%`}
         onChange={(event) => {
           audioEngine.setVolume(Number(event.target.value) / 100);
         }}
-      />{' '}
-      <MuteButton />
+      />
+      {/* aria-pressed tells screen readers whether sound is currently muted. */}
+      <GameButton
+        variant="secondary"
+        size="small"
+        aria-pressed={muted}
+        onClick={() => {
+          audioEngine.setMuted(!muted);
+        }}
+      >
+        Mute
+      </GameButton>
     </div>
   );
 }

@@ -1,0 +1,88 @@
+/* Button art is 256x88 (logical); the label sits inside label_rect from the atlas metadata. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 256 / 88;
+  padding: 0 14%;
+  border: none;
+  /* Rounds the focus outline so it follows the button art. */
+  border-radius: 18px;
+  background: center / 100% 100% no-repeat;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.large {
+  width: clamp(180px, 24vmin, 260px);
+  font-size: clamp(16px, 2.4vmin, 22px);
+}
+
+.small {
+  width: clamp(140px, 18vmin, 200px);
+  font-size: clamp(12px, 1.7vmin, 15px);
+}
+
+.primary {
+  color: var(--color-ink);
+  background-image: url('/assets/ui/menu/button_primary_normal.png');
+}
+
+.primary:hover {
+  background-image: url('/assets/ui/menu/button_primary_hover.png');
+}
+
+.primary:active {
+  background-image: url('/assets/ui/menu/button_primary_pressed.png');
+}
+
+.primary:disabled {
+  color: #5f5548;
+  background-image: url('/assets/ui/menu/button_primary_disabled.png');
+}
+
+.secondary {
+  color: var(--color-cream);
+  background-image: url('/assets/ui/menu/button_secondary_normal.png');
+}
+
+.secondary:active {
+  background-image: url('/assets/ui/menu/button_secondary_pressed.png');
+}
+
+.secondary:hover {
+  filter: brightness(1.12);
+}
+
+/* Round control button: 64x64 art with a 32x32 icon at its centre. */
+.round {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 6vmin, 56px);
+  height: clamp(40px, 6vmin, 56px);
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: url('/assets/ui/controls/button_round_normal.png') center / contain no-repeat;
+}
+
+.round:hover {
+  background-image: url('/assets/ui/controls/button_round_hover.png');
+}
+
+.round:active {
+  background-image: url('/assets/ui/controls/button_round_pressed.png');
+}
+
+.round:disabled {
+  opacity: 0.45;
+}
+
+.round img {
+  width: 50%;
+  height: 50%;
+  pointer-events: none;
+}

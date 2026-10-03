@@ -2,7 +2,7 @@ import type { GameOptions } from './config';
 import type { EndReason } from './simulation/types';
 
 export type SessionStatus = 'running' | 'paused' | 'ended';
-export type PauseReason = 'manual' | 'blur' | 'hidden';
+export type PauseReason = 'manual' | 'blur' | 'hidden' | 'orientation';
 
 /** Final numbers of a completed match, used by the result screen and the ranking. */
 export interface MatchResult {

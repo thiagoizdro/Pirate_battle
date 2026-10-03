@@ -1,0 +1,11 @@
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.panel {
+  width: 100%;
+  min-height: 120px;
+}

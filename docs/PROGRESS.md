@@ -6,7 +6,7 @@
 | 1     | Foundation: tooling, config, RNG, clock, Pixi lifecycle, asset loader, arena     | Done        |
 | 2     | Core gameplay and simulation unit tests                                          | Done        |
 | 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done        |
-| 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Not started |
+| 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Done        |
 | 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Not started |
 | 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Not started |
 | 7     | Delivery: deploy, docs, reports, final checklist                                 | Not started |
@@ -60,3 +60,19 @@ Done:
 Verified in Chromium: effects, bars and deterioration visible; all 27 sounds load; volume/mute persist after reload; on a Pixel 7 landscape emulation, holding "forward" and "fire" with two fingers moves and fires at the same time; no console errors.
 
 Pending for Phase 4: final HUD/dialog styling and layout so touch buttons and HUD never cover the arena on small screens, options screen, result persistence, accessibility pass.
+
+## Phase 4: React UI
+
+Done:
+
+- Hash router (`src/app/router.ts`) and `App` screen switch; reload on `#/battle` returns to the menu.
+- Storage: options, player profile (persistent id + editable name), last completed match (validated on read). `createMatchRecord` builds the record with a single client-generated matchId.
+- Atlas-based components: wooden `Panel` (CSS border-image 9-slice), gold/navy `GameButton`, `RoundButton`, accessible `Dialog` (focus moves in, Tab trap, focus returns, Escape), `ScreenLayout`, `ControlsHelp` (keys on desktop, touch hint on touch screens), `ScreenErrorBoundary`.
+- Screens: Main Menu (Play, Options, controls, Ranking / Match History, last battle), Options (validation with aria-invalid + aria-describedby, Save, persistence, volume/mute), Captain's Log shell with WAI-ARIA tabs (data in Phase 5), Result (score, time played, end reason; persists after refresh), Battle (final HUD from the atlas, polite live region with meaningful announcements only, pause dialog with Resume / Options / Main Menu, keyboard hint, portrait "rotate your device" message with auto-pause).
+- Keyboard input ignores keys typed into text fields and keys already handled by a dialog.
+- The battle screen is lazy-loaded: the menu bundle no longer includes PixiJS (no chunk size warning).
+- 122 unit tests (new: router, announcements, match record, storage).
+
+Verified in Chromium (desktop and Pixel 7 emulation): option errors focus the first invalid field and are linked by aria-describedby; options persist after reload; arrow keys switch log tabs; Escape navigation in pause/options; reload during battle goes to the menu; result and "last battle" survive a reload; portrait shows the rotate message and pauses; landscape layout fits; production preview has no console messages.
+
+Pending: Ranking/History data, registration status and pending queue (Phase 5).

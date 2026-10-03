@@ -65,9 +65,11 @@ saveScenario(initial.scenario, initial.seed);
 
 /** The single mock "server" of the app: its database and its network conditions. */
 export const mockDb = new MockDb(browserStore, FIXTURE_MATCHES);
+// "Slow" answers take half the client timeout, so they are slow but never time out.
 export const mockNetwork = new MockNetwork(initial.scenario, initial.seed, {
   ...DEFAULT_TIMING,
   timeoutMs: API_TIMEOUT_MS,
+  slowLatencyMs: Math.round(API_TIMEOUT_MS / 2),
 });
 
 /** Persists the selected scenario and keeps the URL in sync, so a refresh keeps it. */

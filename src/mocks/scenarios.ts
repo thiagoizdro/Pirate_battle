@@ -6,10 +6,13 @@ export const SCENARIOS = {
     label: 'Multiple pages',
     description: 'Extra generated matches so every list has several pages.',
   },
-  slow: { label: 'Slow', description: 'Every request takes about 2 seconds.' },
+  slow: {
+    label: 'Slow',
+    description: 'Every request takes half the client timeout (2 s by default).',
+  },
   'variable-latency': {
     label: 'Variable latency',
-    description: 'Seeded random delay between 0.1 and 2.5 seconds.',
+    description: 'Seeded random delay from 0.1 s up to 60% of the client timeout.',
   },
   'out-of-order': {
     label: 'Out-of-order responses',

@@ -98,7 +98,8 @@ export class MockNetwork {
       case 'slow':
         return respond(slowLatencyMs);
       case 'variable-latency':
-        return respond(Math.round(this.rng.range(100, 2500)));
+        // Up to 60% of the client timeout, so variable answers are late but never time out.
+        return respond(Math.round(this.rng.range(100, timeoutMs * 0.6)));
       case 'out-of-order': {
         if (kind === 'register') return respond();
         // 1st list request slow, 2nd fast, 3rd slow... so answers arrive in reverse order.

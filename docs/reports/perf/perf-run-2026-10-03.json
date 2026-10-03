@@ -1,0 +1,1884 @@
+{
+  "date": "2026-10-03T15:25:03.728Z",
+  "browser": "Chromium 153.0.8010.12 (headed)",
+  "viewport": "1280x720",
+  "node": "v24.18.0",
+  "platform": "win32 x64",
+  "match": {
+    "startedAt": "2026-10-03T15:21:05.372Z",
+    "durationMs": 181386,
+    "frames": {
+      "frames": 10884,
+      "avgFps": 60.00479641426685,
+      "p95FrameMs": 17.099999999998545,
+      "maxFrameMs": 33.299999999999955,
+      "avgFrameMs": 16.665334435869166
+    },
+    "maxEntities": 37,
+    "avgEntities": 24.6,
+    "maxDisplayObjects": 49,
+    "samples": [
+      {
+        "second": 1,
+        "fps": 58,
+        "p95FrameMs": 17.1,
+        "enemies": 1,
+        "projectiles": 8,
+        "shipViews": 2,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 2,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 2,
+        "projectiles": 2,
+        "shipViews": 3,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 3,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 3,
+        "projectiles": 7,
+        "shipViews": 4,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 4,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 4,
+        "projectiles": 1,
+        "shipViews": 5,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 5,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 5,
+        "projectiles": 6,
+        "shipViews": 6,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 6,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 5,
+        "projectiles": 0,
+        "shipViews": 6,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 7,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 6,
+        "projectiles": 4,
+        "shipViews": 7,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 8,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 7,
+        "projectiles": 2,
+        "shipViews": 8,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 9,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 7,
+        "projectiles": 3,
+        "shipViews": 8,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 10,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 8,
+        "projectiles": 0,
+        "shipViews": 9,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 11,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 7,
+        "projectiles": 2,
+        "shipViews": 8,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 12,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 8,
+        "projectiles": 0,
+        "shipViews": 9,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 13,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 9,
+        "projectiles": 3,
+        "shipViews": 10,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 14,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 9,
+        "projectiles": 0,
+        "shipViews": 10,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 15,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 9,
+        "projectiles": 4,
+        "shipViews": 10,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 16,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 8,
+        "projectiles": 1,
+        "shipViews": 9,
+        "projectileSprites": 8,
+        "effects": 8
+      },
+      {
+        "second": 17,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 8,
+        "projectiles": 3,
+        "shipViews": 9,
+        "projectileSprites": 8,
+        "effects": 7
+      },
+      {
+        "second": 18,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 8,
+        "projectiles": 1,
+        "shipViews": 9,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 19,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 9,
+        "projectiles": 3,
+        "shipViews": 10,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 20,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 9,
+        "projectiles": 0,
+        "shipViews": 10,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 21,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 10,
+        "projectiles": 0,
+        "shipViews": 11,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 22,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 10,
+        "projectiles": 0,
+        "shipViews": 11,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 23,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 11,
+        "projectiles": 1,
+        "shipViews": 12,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 24,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 12,
+        "projectiles": 1,
+        "shipViews": 13,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 25,
+        "fps": 60,
+        "p95FrameMs": 16.9,
+        "enemies": 12,
+        "projectiles": 1,
+        "shipViews": 13,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 26,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 11,
+        "projectiles": 1,
+        "shipViews": 12,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 27,
+        "fps": 60,
+        "p95FrameMs": 16.9,
+        "enemies": 12,
+        "projectiles": 1,
+        "shipViews": 13,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 28,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 13,
+        "projectiles": 2,
+        "shipViews": 14,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 29,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 13,
+        "projectiles": 1,
+        "shipViews": 14,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 30,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 12,
+        "projectiles": 0,
+        "shipViews": 13,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 31,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 13,
+        "projectiles": 1,
+        "shipViews": 14,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 32,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 14,
+        "projectiles": 2,
+        "shipViews": 15,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 33,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 15,
+        "projectiles": 2,
+        "shipViews": 16,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 34,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 14,
+        "projectiles": 4,
+        "shipViews": 15,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 35,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 15,
+        "projectiles": 3,
+        "shipViews": 16,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 36,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 16,
+        "projectiles": 3,
+        "shipViews": 17,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 37,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 17,
+        "projectiles": 3,
+        "shipViews": 18,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 38,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 18,
+        "projectiles": 0,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 39,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 19,
+        "projectiles": 3,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 1
+      },
+      {
+        "second": 40,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 20,
+        "projectiles": 1,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 41,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 4,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 42,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 1,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 43,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 3,
+        "shipViews": 23,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 44,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 3,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 45,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 19,
+        "projectiles": 3,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 8
+      },
+      {
+        "second": 46,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 18,
+        "projectiles": 4,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 7
+      },
+      {
+        "second": 47,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 19,
+        "projectiles": 2,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 48,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 20,
+        "projectiles": 4,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 2
+      },
+      {
+        "second": 49,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 3,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 50,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 19,
+        "projectiles": 3,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 7
+      },
+      {
+        "second": 51,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 19,
+        "projectiles": 1,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 52,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 5,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 53,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 2,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 54,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 4,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 55,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 20,
+        "projectiles": 3,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 56,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 4,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 57,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 2,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 58,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 20,
+        "projectiles": 2,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 6
+      },
+      {
+        "second": 59,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 18,
+        "projectiles": 3,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 8
+      },
+      {
+        "second": 60,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 18,
+        "projectiles": 3,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 61,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 18,
+        "projectiles": 4,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 7
+      },
+      {
+        "second": 62,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 18,
+        "projectiles": 3,
+        "shipViews": 19,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 63,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 19,
+        "projectiles": 3,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 64,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 19,
+        "projectiles": 5,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 65,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 19,
+        "projectiles": 4,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 5
+      },
+      {
+        "second": 66,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 19,
+        "projectiles": 3,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 8
+      },
+      {
+        "second": 67,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 19,
+        "projectiles": 2,
+        "shipViews": 20,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 68,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 5,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 69,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 2,
+        "shipViews": 21,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 70,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 8,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 7
+      },
+      {
+        "second": 71,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 21,
+        "projectiles": 4,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 3
+      },
+      {
+        "second": 72,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 6,
+        "shipViews": 22,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 73,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 4,
+        "shipViews": 23,
+        "projectileSprites": 8,
+        "effects": 4
+      },
+      {
+        "second": 74,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 7,
+        "shipViews": 22,
+        "projectileSprites": 9,
+        "effects": 7
+      },
+      {
+        "second": 75,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 21,
+        "projectiles": 4,
+        "shipViews": 22,
+        "projectileSprites": 9,
+        "effects": 9
+      },
+      {
+        "second": 76,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 8,
+        "shipViews": 23,
+        "projectileSprites": 10,
+        "effects": 2
+      },
+      {
+        "second": 77,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 4,
+        "shipViews": 24,
+        "projectileSprites": 10,
+        "effects": 3
+      },
+      {
+        "second": 78,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 3,
+        "shipViews": 24,
+        "projectileSprites": 10,
+        "effects": 8
+      },
+      {
+        "second": 79,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 6,
+        "shipViews": 24,
+        "projectileSprites": 10,
+        "effects": 8
+      },
+      {
+        "second": 80,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 7,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 2
+      },
+      {
+        "second": 81,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 3
+      },
+      {
+        "second": 82,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 8
+      },
+      {
+        "second": 83,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 7,
+        "shipViews": 23,
+        "projectileSprites": 10,
+        "effects": 5
+      },
+      {
+        "second": 84,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 5,
+        "shipViews": 24,
+        "projectileSprites": 10,
+        "effects": 6
+      },
+      {
+        "second": 85,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 4,
+        "shipViews": 24,
+        "projectileSprites": 10,
+        "effects": 6
+      },
+      {
+        "second": 86,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 9
+      },
+      {
+        "second": 87,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 10,
+        "effects": 2
+      },
+      {
+        "second": 88,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 7,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 11
+      },
+      {
+        "second": 89,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 2,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 6
+      },
+      {
+        "second": 90,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 9
+      },
+      {
+        "second": 91,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 10,
+        "effects": 5
+      },
+      {
+        "second": 92,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 12,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 93,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 1
+      },
+      {
+        "second": 94,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 4,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 95,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 0,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 96,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 3,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 97,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 3,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 98,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 1,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 99,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 4,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 100,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 4,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 101,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 4,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 102,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 3,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 103,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 4,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 104,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 1,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 105,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 4,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 106,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 2,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 107,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 2,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 108,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 24,
+        "projectiles": 2,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 2
+      },
+      {
+        "second": 109,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 5,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 110,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 111,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 2,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 112,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 113,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 6,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 2
+      },
+      {
+        "second": 114,
+        "fps": 60,
+        "p95FrameMs": 16.9,
+        "enemies": 25,
+        "projectiles": 6,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 115,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 116,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 2,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 117,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 7,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 118,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 4,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 119,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 120,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 4,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 121,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 122,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 123,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 24,
+        "projectiles": 5,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 10
+      },
+      {
+        "second": 124,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 4,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 125,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 6,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 126,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 127,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 128,
+        "fps": 60,
+        "p95FrameMs": 16.8,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 129,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 130,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 131,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 8,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 132,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 133,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 7,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 134,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 7,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 135,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 10
+      },
+      {
+        "second": 136,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 137,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 138,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 139,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 10
+      },
+      {
+        "second": 140,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 7,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 141,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 6,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 142,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 143,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 5,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 144,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 2,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 145,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 4,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 146,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 147,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 4,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 148,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 4,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 10
+      },
+      {
+        "second": 149,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 21,
+        "projectiles": 6,
+        "shipViews": 22,
+        "projectileSprites": 12,
+        "effects": 11
+      },
+      {
+        "second": 150,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 7,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 151,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 5,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 152,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 3,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 8
+      },
+      {
+        "second": 153,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 22,
+        "projectiles": 2,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 154,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 3,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 11
+      },
+      {
+        "second": 155,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 21,
+        "projectiles": 3,
+        "shipViews": 22,
+        "projectileSprites": 12,
+        "effects": 11
+      },
+      {
+        "second": 156,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 2,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 157,
+        "fps": 60,
+        "p95FrameMs": 17.2,
+        "enemies": 22,
+        "projectiles": 4,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 11
+      },
+      {
+        "second": 158,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 6,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 159,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 9,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 160,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 161,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 6,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 162,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 3,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 163,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 2,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 12
+      },
+      {
+        "second": 164,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 1,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 165,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 25,
+        "projectiles": 6,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 166,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 4,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 167,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 7,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 11
+      },
+      {
+        "second": 168,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 5,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 169,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 3,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 170,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 20,
+        "projectiles": 4,
+        "shipViews": 21,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 171,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 2,
+        "shipViews": 22,
+        "projectileSprites": 12,
+        "effects": 2
+      },
+      {
+        "second": 172,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 21,
+        "projectiles": 3,
+        "shipViews": 22,
+        "projectileSprites": 12,
+        "effects": 6
+      },
+      {
+        "second": 173,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 22,
+        "projectiles": 2,
+        "shipViews": 23,
+        "projectileSprites": 12,
+        "effects": 3
+      },
+      {
+        "second": 174,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 5,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 4
+      },
+      {
+        "second": 175,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 23,
+        "projectiles": 6,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 176,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 3,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 177,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 24,
+        "projectiles": 6,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 7
+      },
+      {
+        "second": 178,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 23,
+        "projectiles": 2,
+        "shipViews": 24,
+        "projectileSprites": 12,
+        "effects": 9
+      },
+      {
+        "second": 179,
+        "fps": 60,
+        "p95FrameMs": 17.1,
+        "enemies": 24,
+        "projectiles": 6,
+        "shipViews": 25,
+        "projectileSprites": 12,
+        "effects": 5
+      },
+      {
+        "second": 180,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 2
+      },
+      {
+        "second": 181,
+        "fps": 60,
+        "p95FrameMs": 17,
+        "enemies": 25,
+        "projectiles": 3,
+        "shipViews": 26,
+        "projectileSprites": 12,
+        "effects": 2
+      }
+    ],
+    "environment": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "devicePixelRatio": 1,
+      "viewport": "1280x720",
+      "hardwareConcurrency": 8
+    }
+  },
+  "memory": {
+    "baseline": {
+      "heapMb": 3.34,
+      "canvases": 0,
+      "liveStages": 0,
+      "listeners": 9
+    },
+    "cycles": [
+      {
+        "cycle": 1,
+        "heapMb": 7.19,
+        "canvases": 0,
+        "liveStages": 0,
+        "listeners": 11
+      },
+      {
+        "cycle": 2,
+        "heapMb": 7.42,
+        "canvases": 0,
+        "liveStages": 0,
+        "listeners": 11
+      },
+      {
+        "cycle": 3,
+        "heapMb": 7.63,
+        "canvases": 0,
+        "liveStages": 0,
+        "listeners": 11
+      },
+      {
+        "cycle": 4,
+        "heapMb": 7.74,
+        "canvases": 0,
+        "liveStages": 0,
+        "listeners": 11
+      },
+      {
+        "cycle": 5,
+        "heapMb": 7.9,
+        "canvases": 0,
+        "liveStages": 0,
+        "listeners": 11
+      }
+    ]
+  }
+}

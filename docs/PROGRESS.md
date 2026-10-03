@@ -1,15 +1,15 @@
 # Progress
 
-| Phase | Scope                                                                            | Status      |
-| ----- | -------------------------------------------------------------------------------- | ----------- |
-| 0     | Analysis: requirements, conventions, stack and structure proposal                | Done        |
-| 1     | Foundation: tooling, config, RNG, clock, Pixi lifecycle, asset loader, arena     | Done        |
-| 2     | Core gameplay and simulation unit tests                                          | Done        |
-| 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done        |
-| 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Done        |
-| 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Done        |
-| 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Done        |
-| 7     | Delivery: deploy, docs, reports, final checklist                                 | Not started |
+| Phase | Scope                                                                            | Status                        |
+| ----- | -------------------------------------------------------------------------------- | ----------------------------- |
+| 0     | Analysis: requirements, conventions, stack and structure proposal                | Done                          |
+| 1     | Foundation: tooling, config, RNG, clock, Pixi lifecycle, asset loader, arena     | Done                          |
+| 2     | Core gameplay and simulation unit tests                                          | Done                          |
+| 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done                          |
+| 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Done                          |
+| 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Done                          |
+| 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Done                          |
+| 7     | Delivery: deploy, docs, reports, final checklist                                 | Done (deploy pending: author) |
 
 ## Phase 0: Analysis
 
@@ -105,3 +105,19 @@ Done:
 Result: 58 passed, 1 skipped (touch test on desktop by design), about 6 minutes with 2 workers; 151 unit tests passing.
 
 Commands: `npm run test:e2e`, `npm run test:e2e:update` (baselines), `npm run test:e2e:report`.
+
+## Phase 7: Delivery
+
+Done:
+
+- Performance tooling: `?perf` overlay (live FPS, p95, max frame time, entities, display objects, live stages, 3-minute recording to JSON) and `npm run perf` (automated 3-minute match + start/play/exit memory cycles on the optimized e2e build). Frame time uses PixiJS `elapsedMS` (real time), not the capped `deltaMS`.
+- Reference run (headed, i7-8565U / UHD 620, 1280×720): 60.0 FPS average, p95 17.1 ms, max 33.3 ms over 181 s, up to 37 entities; after 5 cycles 0 canvases and 0 live stages; heap snapshot comparison shows no accumulating game objects (details in docs/PERFORMANCE.md).
+- Documentation: README.md, ARCHITECTURE.md, docs/PERFORMANCE.md (with the author's template), docs/CREDITS.md, docs/CHECKLIST.md (R1–R135 → implementation → test), docs/reports/.
+- Deploy preparation: `vercel.json` (Vite, `npm ci`, `npm run build`, `dist`, SPA rewrite, no-cache service worker).
+- Extra E2E assertion for R105 (typing "p", "e", "q" in the pause options neither resumes nor fires).
+
+Pending (author):
+
+- Create the GitHub repository, push, connect it to Vercel and add the live URL to README.md.
+- Run the final performance measurement on the reference machine and fill the template in docs/PERFORMANCE.md.
+- Send the time estimate (R135) and confirm the asset license wording in docs/CREDITS.md.

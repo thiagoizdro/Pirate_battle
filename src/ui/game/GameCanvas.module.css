@@ -1,0 +1,7 @@
+.host {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Touch input will be handled by the game; stop the browser from scrolling or zooming. */
+  touch-action: none;
+}

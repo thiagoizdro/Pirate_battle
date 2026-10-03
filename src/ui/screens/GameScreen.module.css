@@ -1,0 +1,50 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-letterbox);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  text-align: center;
+  background: var(--color-letterbox);
+}
+
+.progress {
+  width: min(320px, 80vw);
+  height: 16px;
+  border: 2px solid var(--color-gold);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-panel-dark);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-gold);
+  transition: width 150ms ease-out;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.exit {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}

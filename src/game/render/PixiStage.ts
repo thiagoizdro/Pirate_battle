@@ -1,15 +1,10 @@
 import { Application, Container } from 'pixi.js';
 
 import type { Vec2 } from '../simulation/geometry';
+import { stageCreated, stageDestroyed } from './stageCounter';
 import { computeViewport, screenToArena, type Viewport } from './viewport';
 
 const LETTERBOX_COLOR = '#0b1a2b';
-
-/** Number of stages alive right now. Lets us prove in dev and tests that remounts don't leak. */
-let liveStages = 0;
-export function getLiveStageCount(): number {
-  return liveStages;
-}
 
 /**
  * Owns the PixiJS Application: the canvas, its size and pixel density, and the letterboxed
@@ -47,7 +42,7 @@ export class PixiStage {
     });
     this.resizeObserver.observe(container);
     this.resize();
-    liveStages++;
+    stageCreated();
   }
 
   /** PixiJS v8 initialization is async, so the stage is created through this factory. */
@@ -121,6 +116,6 @@ export class PixiStage {
       { removeView: true },
       { children: true, texture: false, textureSource: false },
     );
-    liveStages--;
+    stageDestroyed();
   }
 }

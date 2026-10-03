@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getLiveStageCount } from '../../game/render/PixiStage';
+import { getLiveStageCount } from '../../game/render/stageCounter';
 import styles from './DevLifecyclePanel.module.css';
 
 interface Counts {

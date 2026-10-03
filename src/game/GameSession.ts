@@ -6,6 +6,8 @@ import { HudStore, type HudSnapshot, type PauseReason, type SessionStatus } from
 import { createMatchConfig, DEFAULT_BALANCE, type GameOptions } from './config';
 import { KeyboardInput } from './input/KeyboardInput';
 import { TouchInput } from './input/TouchInput';
+import { PERF_ENABLED, PerfMonitor } from './perf/PerfMonitor';
+import { setCurrentPerfMonitor } from './perf/perfGlobal';
 import { createArenaView } from './render/ArenaView';
 import type { GameAssets } from './render/assets';
 import { EntityRenderer } from './render/EntityRenderer';
@@ -54,6 +56,8 @@ export class GameSession {
   readonly hud: HudStore;
   /** The on-screen touch buttons write here. */
   readonly touch = new TouchInput();
+  /** Frame and entity metrics, only with ?perf (see docs/PERFORMANCE.md). */
+  readonly perf: PerfMonitor | null = PERF_ENABLED ? new PerfMonitor() : null;
   private readonly stage: PixiStage;
   private readonly options: GameOptions;
   private readonly keyboard: KeyboardInput;
@@ -100,6 +104,7 @@ export class GameSession {
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     stage.app.ticker.add(this.tick);
     this.audio.matchStarted();
+    if (this.perf) setCurrentPerfMonitor(this.perf);
     if (TEST_HOOKS_ENABLED) {
       this.frozen = getTestSetup().startFrozen;
       registerTestSession(this.testControl);
@@ -169,6 +174,10 @@ export class GameSession {
     if (this.destroyed) return;
     this.destroyed = true;
     if (TEST_HOOKS_ENABLED) unregisterTestSession(this.testControl);
+    if (this.perf) {
+      this.perf.stop();
+      setCurrentPerfMonitor(null);
+    }
     this.stage.app.ticker.remove(this.tick);
     this.keyboard.detach();
     this.touch.setGameplayActive(false);
@@ -221,7 +230,21 @@ export class GameSession {
     this.entities.sync(this.match.state, visualDtMs);
     this.stage.updateShake(visualDtMs);
     this.publishHud();
+    // elapsedMS is the real frame time; deltaMS is capped by PixiJS (100 ms) and would hide slow frames.
+    if (this.perf) this.recordPerf(ticker.elapsedMS);
   };
+
+  private recordPerf(frameMs: number): void {
+    const { state } = this.match;
+    const display = this.entities.displayCounts;
+    this.perf?.frame(frameMs, {
+      enemies: state.enemies.length,
+      projectiles: state.projectiles.length,
+      shipViews: display.ships,
+      projectileSprites: display.projectileSprites,
+      effects: display.effects,
+    });
+  }
 
   /**
    * Runs `ms` of simulated time immediately (test builds). Same steps as a real frame:

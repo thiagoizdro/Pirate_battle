@@ -21,7 +21,9 @@
     "preview:e2e": "vite preview --outDir dist-e2e --port 4174 --strictPort",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "perf": "node scripts/perf-run.mjs",
+    "test:report": "vitest run --reporter=default --reporter=junit --outputFile.junit=docs/reports/unit/junit.xml"
   },
   "dependencies": {
     "@tanstack/react-query": "5.104.1",

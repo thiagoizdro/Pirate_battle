@@ -7,7 +7,9 @@ import type { GameSession } from '../../game/GameSession';
 import { Dialog } from '../components/Dialog';
 import { GameButton } from '../components/GameButton';
 import { Panel } from '../components/Panel';
+import { PERF_ENABLED } from '../../game/perf/PerfMonitor';
 import { DevLifecyclePanel } from '../dev/DevLifecyclePanel';
+import { PerfOverlay } from '../dev/PerfOverlay';
 import { GameAnnouncer } from '../game/GameAnnouncer';
 import { GameCanvas } from '../game/GameCanvas';
 import { Hud } from '../game/Hud';
@@ -226,6 +228,7 @@ export function GameScreen({
       </div>
 
       {import.meta.env.DEV && <DevLifecyclePanel onRemount={remount} />}
+      {PERF_ENABLED && <PerfOverlay session={session} />}
     </main>
   );
 }

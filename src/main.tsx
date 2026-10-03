@@ -6,6 +6,8 @@ import { createQueryClient } from './api/queries';
 import { RegistrationProvider } from './api/registration';
 import { App } from './app/App';
 import { leaveBattleOnLoad } from './app/router';
+import { PERF_ENABLED } from './game/perf/PerfMonitor';
+import { installPerfGlobal } from './game/perf/perfGlobal';
 import { installTestHooks, TEST_HOOKS_ENABLED } from './game/testHooks';
 import './styles/global.css';
 
@@ -14,6 +16,8 @@ leaveBattleOnLoad();
 
 // Test instrumentation exists only in the e2e build; this whole branch is removed otherwise.
 if (TEST_HOOKS_ENABLED) installTestHooks();
+// Profiling helpers, only with ?perf in the URL (docs/PERFORMANCE.md).
+if (PERF_ENABLED) installPerfGlobal();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element #root not found');

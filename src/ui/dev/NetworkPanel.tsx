@@ -23,8 +23,10 @@ export function NetworkPanel() {
   const selectId = useId();
 
   const refreshEverything = () => {
-    // Lists refetch with the new behaviour, and pending registrations are retried.
-    void queryClient.invalidateQueries();
+    // Requests (and retries) started under the old scenario are canceled first. Without this,
+    // a list with no data would just continue its old retry cycle instead of fetching again.
+    void queryClient.cancelQueries().then(() => queryClient.invalidateQueries());
+    // Pending registrations are retried right away.
     window.dispatchEvent(new Event(SCENARIO_CHANGE_EVENT));
   };
 

@@ -1,0 +1,118 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.2vmin, 12px);
+  width: 100%;
+}
+
+/* Rows are separate rounded bars, like the reference screenshots. */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  font-size: clamp(12px, 1.8vmin, 16px);
+  text-align: left;
+}
+
+.table th {
+  padding: 0 12px;
+  font-size: clamp(10px, 1.4vmin, 12px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.table td {
+  padding: clamp(6px, 1.2vmin, 12px) 12px;
+  font-weight: 700;
+  background: var(--color-row);
+}
+
+.table td:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.table td:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.mine td {
+  background: var(--color-row-highlight);
+}
+
+.rank,
+.points {
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.captain {
+  white-space: nowrap;
+}
+
+.you {
+  margin-left: 8px;
+  padding: 1px 6px;
+  border: 1px solid var(--color-gold);
+  border-radius: 4px;
+  font-size: 0.7em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+.date {
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.timeUp {
+  color: var(--color-success);
+  font-size: 0.85em;
+  text-transform: uppercase;
+}
+
+.defeated {
+  color: var(--color-danger);
+  font-size: 0.85em;
+  text-transform: uppercase;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pageLabel {
+  min-width: 9em;
+  font-size: clamp(11px, 1.6vmin, 13px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.updating {
+  color: var(--color-muted);
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  color: var(--color-muted);
+}
+
+.warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-danger);
+}

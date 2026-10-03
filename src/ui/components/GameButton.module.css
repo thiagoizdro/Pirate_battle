@@ -21,8 +21,9 @@
 }
 
 .small {
-  width: clamp(140px, 18vmin, 200px);
-  font-size: clamp(12px, 1.7vmin, 15px);
+  width: clamp(150px, 20vmin, 220px);
+  padding: 0 11%;
+  font-size: clamp(11px, 1.6vmin, 14px);
 }
 
 .primary {

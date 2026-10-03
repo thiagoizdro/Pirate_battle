@@ -4,3 +4,4 @@ challenge
 playwright-report
 test-results
 package-lock.json
+dist-e2e

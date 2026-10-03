@@ -4,6 +4,24 @@
   background: var(--color-letterbox);
 }
 
+.hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 12px;
+  background: rgb(11 26 43 / 75%);
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud button {
+  margin-left: auto;
+}
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -14,7 +32,7 @@
   gap: 16px;
   padding: 16px;
   text-align: center;
-  background: var(--color-letterbox);
+  background: rgb(11 26 43 / 85%);
 }
 
 .progress {
@@ -35,12 +53,6 @@
 .actions {
   display: flex;
   gap: 12px;
-}
-
-.exit {
-  position: absolute;
-  top: 12px;
-  right: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {

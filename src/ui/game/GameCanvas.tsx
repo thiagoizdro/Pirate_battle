@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import { DEFAULT_BALANCE } from '../../game/config';
-import { createArenaView } from '../../game/render/ArenaView';
+import type { GameOptions } from '../../game/config';
+import { GameSession } from '../../game/GameSession';
 import type { GameAssets } from '../../game/render/assets';
-import { PixiStage } from '../../game/render/PixiStage';
-import { buildObstacles, DEFAULT_ARENA } from '../../game/simulation/arena';
 import styles from './GameCanvas.module.css';
 
 const showColliders =
@@ -12,47 +10,55 @@ const showColliders =
 
 interface GameCanvasProps {
   assets: GameAssets;
+  options: GameOptions;
+  onSessionChange: (session: GameSession | null) => void;
   onError: (message: string) => void;
 }
 
 /**
- * Mounts the PixiJS stage into a div and tears it down on unmount (R66, R67).
+ * Mounts a GameSession into a div and tears it down on unmount (R66, R67).
  *
  * Strict Mode mounts, unmounts and mounts again. Because PixiJS init is async, the first
  * mount may finish *after* its cleanup ran. The `disposed` flag catches that case and destroys
- * the late stage immediately, so only one canvas and one ticker ever survive.
+ * the late session immediately, so only one canvas, one ticker and one set of listeners survive.
  */
-export function GameCanvas({ assets, onError }: GameCanvasProps) {
+export function GameCanvas({ assets, options, onSessionChange, onError }: GameCanvasProps) {
   const hostRef = useRef<HTMLDivElement>(null);
+  // Options are a snapshot taken when this component mounts; later changes must not restart it.
+  const optionsRef = useRef(options);
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
     let disposed = false;
-    let stage: PixiStage | null = null;
-    const { widthPx, heightPx, tileSizePx } = DEFAULT_BALANCE.arena;
+    let session: GameSession | null = null;
 
-    PixiStage.create(host, widthPx, heightPx)
+    GameSession.create({
+      container: host,
+      assets,
+      options: optionsRef.current,
+      showColliders,
+    })
       .then((created) => {
         if (disposed) {
           created.destroy();
           return;
         }
-        stage = created;
-        const obstacles = showColliders ? buildObstacles(DEFAULT_ARENA, tileSizePx) : undefined;
-        stage.world.addChild(createArenaView(DEFAULT_ARENA, assets, tileSizePx, obstacles));
+        session = created;
+        onSessionChange(created);
       })
       .catch((error: unknown) => {
-        console.warn('Renderer failed to start', error);
-        if (!disposed) onError('The game renderer could not start.');
+        console.warn('Game failed to start', error);
+        if (!disposed) onError('The game could not start.');
       });
 
     return () => {
       disposed = true;
-      stage?.destroy();
-      stage = null;
+      session?.destroy();
+      session = null;
+      onSessionChange(null);
     };
-  }, [assets, onError]);
+  }, [assets, onSessionChange, onError]);
 
   return <div ref={hostRef} className={styles.host} data-testid="game-canvas" />;
 }

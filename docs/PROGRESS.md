@@ -7,7 +7,7 @@
 | 2     | Core gameplay and simulation unit tests                                          | Done        |
 | 3     | Feedback and polish: health bars, deterioration, effects, sounds, touch controls | Done        |
 | 4     | React UI: screens, HUD, options, result persistence, accessibility, mobile       | Done        |
-| 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Not started |
+| 5     | API: contracts, Axios, TanStack Query, pending queue, MSW scenarios              | Done        |
 | 6     | Playwright: instrumentation, 12 areas, visual baselines                          | Not started |
 | 7     | Delivery: deploy, docs, reports, final checklist                                 | Not started |
 
@@ -76,3 +76,19 @@ Done:
 Verified in Chromium (desktop and Pixel 7 emulation): option errors focus the first invalid field and are linked by aria-describedby; options persist after reload; arrow keys switch log tabs; Escape navigation in pause/options; reload during battle goes to the menu; result and "last battle" survive a reload; portrait shows the rotate message and pauses; landscape layout fits; production preview has no console messages.
 
 Pending: Ranking/History data, registration status and pending queue (Phase 5).
+
+## Phase 5: API, TanStack Query and MSW
+
+Done:
+
+- Contracts (`src/api/contracts.ts`): `MatchRecord`, `Page<T>`, `RankingEntry`, queries, `RegisterMatchResponse`, `ApiErrorBody`.
+- Axios client with timeout (`VITE_API_TIMEOUT_MS`, default 4000) and typed endpoints that accept an AbortSignal; error classification (`timeout`, `network`, `client`, `server`, `canceled`) and retryability.
+- TanStack Query: keys per config/player/page, `keepPreviousData`, `refetchOnMount: 'always'` (tabs refresh when shown again), retry policy, invalidation of both tabs after a registration and after scenario changes.
+- Pending queue (`src/api/pendingQueue.ts`): persisted before sending, one request per match at a time, removed on 201/200, kept as failed with the error otherwise; `RegistrationProvider` retries on start, online, scenario change, every 15 s and after an in-flight send when a retry was requested.
+- MSW: persisted mock DB (fixtures + confirmed records), deterministic tie-break, idempotent PUT with validation, 14 seeded scenarios, URL selection (`?scenario=&seed=`), Network panel with Reset mock data, worker started before render in dev and in the published build (lazy-loaded chunk).
+- UI: Ranking and Match History tables with pagination, loading, empty, error + Retry and background-refresh warning; registration status on the result screen; pending banner in the Captain's Log.
+- 151 unit tests (new: mock DB rules, pending queue, and real Axios + real MSW handlers via msw/node for every scenario, including timeout-after-save without duplication and out-of-order responses).
+
+Verified in Chromium (dev and production preview): match registration updates both tabs; connection failure → status failed → switching to success registers it immediately; failed record survives a reload and is sent on start; timeout-after-save adds exactly one record; ranking failure shows error + Retry; multiple pages paginate; production preview console is empty in the success scenario.
+
+Pending: Playwright suite and test instrumentation (Phase 6).

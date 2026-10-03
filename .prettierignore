@@ -1,0 +1,6 @@
+dist
+public
+challenge
+playwright-report
+test-results
+package-lock.json

@@ -47,6 +47,8 @@ export interface ShooterConfig extends ShipStats {
   attackRangePx: number;
   /** The Shooter stops approaching at this distance and keeps firing. */
   preferredDistancePx: number;
+  /** Fires only when the player is within this angle of its bow. */
+  aimToleranceRad: number;
   weapon: WeaponConfig;
 }
 
@@ -66,6 +68,12 @@ export interface GameBalance {
   player: ShipStats & { front: WeaponConfig; broadside: BroadsideConfig };
   chaser: ChaserConfig;
   shooter: ShooterConfig;
+  ai: {
+    /** How far ahead enemies probe for islands ("whiskers") to steer around them. */
+    lookAheadPx: number;
+    /** Angle of the left and right whiskers relative to the bow. */
+    whiskerAngleRad: number;
+  };
   spawn: {
     /** Probability that a spawned enemy is a Chaser; the rest are Shooters (A15). */
     chaserRatio: number;
@@ -119,6 +127,7 @@ export const DEFAULT_BALANCE: GameBalance = {
     radiusPx: 26,
     attackRangePx: 380,
     preferredDistancePx: 300,
+    aimToleranceRad: 0.2,
     weapon: {
       cooldownMs: 1800,
       damage: 10,
@@ -127,6 +136,10 @@ export const DEFAULT_BALANCE: GameBalance = {
       projectileLifetimeMs: 1400,
       projectileRadiusPx: 5,
     },
+  },
+  ai: {
+    lookAheadPx: 90,
+    whiskerAngleRad: 0.6,
   },
   spawn: {
     chaserRatio: 0.6,

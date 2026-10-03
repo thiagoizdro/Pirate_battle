@@ -64,7 +64,7 @@ export function HistoryTab({ playerId, playerName }: HistoryTabProps) {
               </tbody>
             </table>
             <Pagination
-              page={data.page}
+              page={page}
               totalPages={data.totalPages}
               onChange={setPage}
               busy={query.isPlaceholderData}

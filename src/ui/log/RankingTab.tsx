@@ -71,7 +71,7 @@ export function RankingTab({ options, playerId }: RankingTabProps) {
               </tbody>
             </table>
             <Pagination
-              page={data.page}
+              page={page}
               totalPages={data.totalPages}
               onChange={setPage}
               busy={query.isPlaceholderData}
